@@ -1,0 +1,24 @@
+libraries	
+datatype	
+parnpeval	n	x	.Random.seed
+shapiro	
+shapiroeruptions	faithful
+densityeruptions	
+densityeruptionscomp	
+histdensityeruptions	
+npudenseruptions	fhat
+npudenseruptionswaiting	fhat
+npudensfactor	n	phat	sex
+npudensordered	income	n	phat
+tbl-wage1mixedtable	bw.all	bw.subset	wage1
+wage1mixeddensitycode	
+fig-wage1mixeddensity	bw	fhat	lwage.seq	numdep.seq	wage1.eval
+npregcos	dgp	ghat	ghat.ols	n	x	y
+cosolssummary	
+cosgradient	
+wage1summary	ghat
+wage1plot	
+wage1gradientplot	
+wage1sigtestols	ghat.ols
+wage1sigtestnp	
+wage1preddf	df

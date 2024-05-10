@@ -1,0 +1,929 @@
+---
+title: Nonparametric Workshop
+date: 5/19/2024
+date-format: full
+subtitle: Veracruz, Mexico
+author: Jeffrey S. Racine
+institute: McMaster University
+format:
+  revealjs:
+    background-transition: fade
+    center: true
+    chalkboard: true
+    css: custom.css
+    embed-resources: false
+    footer: "Workshop | J. Racine"
+    ## This "hack" is exclusive to using mathjax and allows for plain vanilla
+    ## equation cross referencing using any LaTeX math environment such as
+    ## align, equation, split, etc., i.e., \label{eqfoo} and \eqref{eqfoo} (it
+    ## can also be used for revealjs, html, while standard pdf will naturally
+    ## accept it using defaults - breaks if used for docx, ppt etc.)
+    html-math-method: mathjax
+    include-in-header:
+      - text: |
+          <script>
+          window.MathJax = {
+            tex: {
+              tags: 'ams'
+            }
+          };
+          </script>    
+    incremental: true
+    link-external-newwindow: true
+    ## multiplex: true will create two html files:
+    ## 1. index.html: This is the file you should publish online and that your
+    ## audience should view.
+    ## 2. index-speaker.html: This is the file that you should present from.
+    ## This file can remain on your computer and does not need to be published
+    ## elsewhere.
+    multiplex: true
+    preview-links: auto
+    ## https://github.com/shafayetShafee/reveal-header
+    ## quarto add shafayetShafee/reveal-header 
+    # sc-sb-title: false
+    self-contained-math: true
+    show-notes: false
+    slide-number: true
+    theme: default
+    touch: true
+    transition: slide
+editor: source
+bibliography: slides.bib
+link-citations: true
+knitr:
+  opts_chunk:
+    autodep: true
+    collapse: true
+    cache: true
+    echo: false
+    eval.after: "fig.cap"
+    fig.align: "center"
+    message: false
+    warning: false
+    R.options:
+      np.messages: false
+      plot.par.mfrow: false
+---
+
+```{r libraries}
+#| include: false
+library(np)
+```
+
+# Slide Pro-Tips {.smaller}
+
+::: {.nonincremental}
+
+- Link to slides - <a href="https://jeffreyracine.github.io/UVworkshop">jeffreyracine.github.io/UVworkshop</a> (case sensitive) (<a href="https://jeffreyracine-github-io.translate.goog/UVworkshop/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp#/title-slide">Google Translate</a>)
+
+- View **full screen** by pressing the F key (press the Esc key to revert)
+
+- Access **navigation menu** by pressing the M key (navigation menu X to close)
+
+- **Advance** using arrow keys
+
+- **Zoom** in by holding down the Alt key in Windows, Opt key in macOS or Ctrl key in Linux, and clicking on any screen element (Alt/Opt/Ctrl click again to zoom out)
+
+- Use **copy to clipboard** button for R code blocks (upper right in block) to copy and paste into R/RStudio
+
+- **Export to a PDF** by pressing the E key (wait a few seconds, then print [or print using system dialog], enable landscape layout, then save as PDF - press the E key to revert)
+
+- Enable drawing tools - chalk **board** by pressing the B key (B to revert), notes **canvas** by pressing the C key (C to revert), press the Del key to erase, press the D key to **download drawings**
+
+:::
+
+::: {.notes}
+Encourage participants to print/save a PDF copy of the slides as there is no guarantee that this material will be there when they realize it might be useful.
+:::
+
+# Welcome!
+
+- The website with install info for R, RStudio, and $\rm\TeX$ is
+
+  <https://jeffreyracine.github.io/UVworkshop>
+
+- The GitHub repository with example code is
+
+  <https://github.com/JeffreyRacine/UVworkshop>
+
+- No seas tímido, siéntete libre de hacer preguntas
+
+- ¡Vámonos!
+
+## Welcome!
+
+- You will be guided through basic nonparametric kernel methods using R
+
+- You will also, if patient, be introduced to recently released tools for conducting reproducible research
+
+- No background knowledge of either nonparametric analysis or the R programming language is required
+
+- All software is available for *free* and is *open source*
+
+- For more detailed descriptions see  @racine_2019, @10.2307/41337225, and @np
+
+# Overview
+
+- I hope that you leave this workshop armed with a modern set of data-analytic tools
+
+- Let's briefly discuss the following:
+
+  - <a href="https://www.r-project.org/about.html">What is R?</a>
+  
+  - <a href="https://posit.co/products/open-source/rstudio/">What is RStudio?</a>
+  
+  - <a href="https://en.wikipedia.org/wiki/Kernel_regression">What is Kernel Regression?</a>
+  
+  - <a href="https://quarto.org">What is Quarto?</a>
+  
+# Background <br> Data Types
+
+## R and Data Types
+
+::: callout-important
+*Pre-cast* data *prior to analysis* so R functions can do their job
+:::
+
+- It is *crucial* to understand different data types in R
+
+- There are three R functions we will use: `numeric()`, `factor()`, and `ordered()`
+
+- These correspond to data that are *numbers*, *unordered categories*, and *ordered categories*, respectively
+
+- Pay careful attention to the following example
+
+## R and Data Types {.smaller}
+
+- Below is an example of how we *cast* our data in R *prior* to analyzing it
+
+- Copy and paste this into a new R file in RStudio, then run it line-by-line
+
+  ```{r datatype}
+  #| echo: true
+  #| eval: false
+  ## Generate some data: sex (unordered categorical), income (ordered categorical),
+  ## and height (numeric)
+  n <- 100
+  sex <- sample(c("Female","Male"),n,replace=TRUE,prob=c(.4,.6))
+  income <- sample(c("Low","Middle","High"),n,replace=TRUE,prob=c(.3,.5,.2))
+  height <- rnorm(n,mean=150,sd=20)
+  ## Note - by default these variables may not be the data types we desire
+  class(sex);class(income);class(height)
+  ## income is already numeric(), but sex and height are character()
+  ## sex is categorical and unordered, so cast as type factor()
+  sex <- factor(sex)
+  ## income is categorical and ordered, but we need to ensure intended order (it
+  ## will assume alphabetical ordering otherwise). Suppose you ignore it - let's
+  ## see what happens when we just cast as type ordered() using defaults
+  income <- ordered(income)
+  ## The levels are in alphabetical order, which we don't want
+  levels(income)
+  ## We shall reorder the ordered factor levels as intended using levels=...
+  income <- ordered(income,levels=c("Low","Middle","High"))
+  levels(income)
+  ## Check data types again
+  class(sex);class(income);class(height)
+  ## Note that with integers the default ordered() works fine
+  x <- sample(c(2,5,4,3,1),n,replace=TRUE)
+  x <- ordered(x)
+  levels(x)
+  ```
+  
+::: {.notes}
+Pull up RStudio and patiently explain the interface then run the example - don't waste time but realize this could be their first exposure to R/RStudio.
+:::
+
+## RStudio R Editor Interface
+  
+![](images/rstudio_rcode.png)
+
+# Background <br> Density Estimation
+
+## Parametric or Nonparametric? {.smaller}
+
+Suppose we need to estimate the density $f(x)$ of some numeric random variable $X$
+
+```{r  parnpeval}
+#| eval: true
+#| echo: true
+## Let's simulate a random numeric sample from the normal distribution
+set.seed(42)
+n <- 1000
+x <- rnorm(n)
+## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")
+x <- sort(x)
+## Since we simulated the data, let's plot the true, known, parametric density
+## (we can't do this with actual data because the density of such data is, in
+## general, unknown)
+plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate",xlab="X")
+```
+
+## Parametric or Nonparametric?
+
+- The R function `shapiro.test(x)` tests for normality
+  
+  ```{r shapiro}
+  pander::pander(shapiro.test(x))
+  ```
+
+- This is *simulated normal* data, and we fail to reject the null
+
+  ::: callout-warning
+  What if we got the null density wrong (i.e., what if we rejected the null)?
+  :::
+
+## Parametric or Nonparametric?
+
+- Now let's test normality for actual data, `eruptions`
+
+  ```{r shapiroeruptions}
+  data(faithful)
+  with(faithful,pander::pander(shapiro.test(eruptions)))
+  ```
+
+  ::: callout-warning
+  Oh oh... I guess we rule out the normal parametric model... what next?
+  :::
+
+## Parametric or Nonparametric?
+
+- Actual data ($X_i$, $i=1,\dots,n$) is rarely drawn from the simple parametric distributions used in *sampling theory*
+
+- Sampling theory describes *summary statistics*, e.g., *averages* of actual data, or *averages* of squared deviations, such as 
+  \begin{align*}
+  \hat\mu&=\frac{1}{n}\sum_{i=1}^n X_i\quad\text{ or }\quad\hat\sigma^2=\frac{1}{n-1}\sum_{i=1}^n (X_i -\hat\mu)^2&
+  \end{align*}
+
+- But we need to estimate the *density of the actual data* (i.e., $f(x)$), not the *density of some summary statistic* (i.e., $f(\hat\mu)$)
+
+## Parametric or Nonparametric?
+
+- Below is a nonparametric density estimate and data *rug* for the `eruptions` data (it is bi-modal *and* asymmetric)
+
+  ```{r densityeruptions}
+  plot(density(faithful$eruptions),main="")
+  rug(faithful$eruptions)
+  ```
+
+## Parametric or Nonparametric?
+
+- Below is a nonparametric and *normal* parametric estimate (recall the normal parametric model has been *rejected*)
+
+  ```{r densityeruptionscomp}
+  plot(density(faithful$eruptions),main="")
+  with(faithful,lines(density(eruptions)$x,dnorm(density(eruptions)$x,mean=mean(eruptions),sd=sd(eruptions)),col=2,lty=2))
+  rug(faithful$eruptions)
+  legend("topleft",c("Nonparametric","Parametric"),lty=c(1,2),col=c(1,2),bty="n")
+  ```
+
+## Parametric or Nonparametric?
+
+- Here lies the crux of the parametric problem
+
+- We write down some parametric model that is drawn from a *dense* space of functions (their number is *uncountable*)
+
+- One very important assumption is *this parametric model is the true model*, and all model properties (unbiasedness, consistency etc.) depend *crucially* on this being the case
+
+- But if you are serious, you immediately *test* your model for correct specification
+
+- What if the parametric model is rejected, as it often is?
+  
+# Nonparametric Essentials <br> Numeric Data
+  
+## Numeric Data
+
+- Parametric methods require the user to make *very strong assumptions* about the *data generating process* (DGP) 
+
+- We just considered density estimation, but the exact same issue plagues all parametric analysis (i.e., regression, etc.)
+
+- We will consider, instead, nonparametric *kernel* estimators
+
+- A *kernel* is simply a weight function, which for *numeric* data we denote by $K(Z_i)$ where $Z_i=(x-X_i)/h$
+
+- We give *higher* weight to observations close to $x$ (i.e., small $Z_i$) than to those lying further away (i.e., large $Z_i$)
+
+## Non-Smooth or Smooth?
+
+- Below are non-smooth and smooth nonparametric density estimates for the *numeric* variable `eruptions`
+
+  ```{r histdensityeruptions}
+  hist(faithful$eruptions,prob=TRUE,main="",xlab="Eruptions",breaks=20,xlim=c(1.25,5.5))
+  with(faithful,lines(density(eruptions)$x,fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
+  rug(faithful$eruptions)
+  ```
+
+## Non-Smooth or Smooth?
+
+- The non-smooth nonparametric histogram density estimator is
+  \begin{equation*} 
+  f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x) 
+  \end{equation*} 
+  
+- This estimator has drawbacks, including
+
+  - it is not particularly *efficient* in the statistical sense 
+  
+  - the estimator's discontinuity presents obstacles if derivatives are required ($df_H(x)/dx$ is 0 or undefined)
+  
+::: { .notes }
+In the keynote talk I will talk about how we might be able to *avoid* making any smoothing assumptions if we have replication (i.e., are in an FDA setting)
+:::
+  
+##  Smooth Univariate Density Estimation
+
+- Consider a symmetric smooth kernel function that satisfies $K(z)\ge 0$ and $\int_{-\infty}^{\infty}K(z)\,dz=1$
+
+- The smooth nonparametric kernel density estimator is
+  \begin{equation*}
+  \hat f(x)=\frac{1}{nh}\sum_{i=1}^n K\left(\frac{x-X_i}{h}\right)
+  \end{equation*}
+
+- This estimator is dominant in applied settings, though *boundary bias* can be an issue (simple corrections exist, see `npuniden.boundary()` in the `np` package)
+
+## Smooth Univariate Density Estimation
+
+::: callout-important
+- The kernel function $K(z)$ is relatively unimportant (it imparts *smoothness* on the estimate, where smooth functions are *continuously differentiable* functions)
+
+- The bandwidth $h$ is crucial (it governs the bias-variance trade-off)
+:::
+
+- *Closeness* is determined by a *bandwidth*, denoted $h$
+
+- We choose $h$ to minimize *square error risk* and trade off *bias* for *variance* for the sample at hand
+
+- To accomplish this we use *data-driven* methods for selecting $h$ (e.g., least-squares cross-validation)
+
+## Smooth Univariate Density Estimation
+
+```{r npudenseruptions}
+#| echo: true
+library(np)
+data(faithful)
+fhat <- npudens(~eruptions,data=faithful)
+plot(fhat,neval=250,plot.errors.method="bootstrap")
+```
+
+## Smooth Joint Density Estimation
+
+- So far we have considered univariate densities ($X\in\mathbb{R}^1$)
+
+- Let $X\in \mathbb{R}^q$ denote a numeric vector of dimension $q$
+
+- Let $f(x)=f(x_1,x_2,\dots,x_q)$ denote a joint PDF evaluated at $x=(x_1,x_2,\dots,x_q)'$
+
+- Let $\{X_1,X_2,\dots,X_n\}$ represent $n$ draws of a numeric random vector $X$, where the $i$th draw is denoted by $X_i=(X_{i1},X_{i2},\dots,X_{iq})$
+
+## Smooth Joint Density Estimation
+
+- The multivariate kernel density estimator is
+\begin{equation*}
+\hat f(x)=\frac{1}{nh_1\dots h_q}\sum_{i=1}^n K\left(\frac{x_1-X_{i1}}{h_1},\dots,\frac{x_q-X_{iq}}{h_q}\right)
+\end{equation*}
+  
+- $K(\cdot)$ is a *multivariate* kernel (typically the *product* of univariate kernels - we have lots of flexibility here)
+  
+- We continue to use data-driven methods (typically cross-validation) for bandwidth selection when $q\ge1$ (optimal bandwidths differ across variables, i.e.,  $h_1\ne h_2$, etc.)
+
+## Smooth Joint Density Estimation
+
+```{r npudenseruptionswaiting}
+#| echo: true
+library(np)
+data(faithful)
+fhat <- npudens(~eruptions+waiting,data=faithful)
+plot(fhat,theta=330,xtrim=-0.05,neval=75,view="fixed",main="")
+```
+
+# Nonparametric Essentials <br> Categorical Data
+
+## Categorical Variables
+
+- We considered the density of continuously distributed random variables $X\in\mathbb{R}$, but we also deal with the probability function of categorical variables $X\in\mathcal{D}$ where $\mathcal{D}$ is a discrete set
+
+- We might presume a parametric model for the probability function of $X\in\mathcal{D}$ but we face exactly the same issue we faced before
+
+- The non-smooth categorical counterpart to the histogram is called the *frequency* or *empirical* probability estimator and, like the histogram, has some drawbacks
+
+## Univariate Probability Estimation
+
+- Let $X\in\mathcal{D}=\{0,1,\dots,c-1\}$ be categorical
+
+- $X$ can be *unordered* (`factor()` in R) or *ordered* (`ordered()` in R)
+
+- The  nonparametric *frequency* estimator of $p(x)$ is
+\begin{align*}
+  p_n(x)&=\frac{\# X_i\text{ equal to }x}{n}\\
+  &=\frac{1}{n}\sum_{i=1}^n \mathbf{1}(X_i=x)
+\end{align*}
+
+## Univariate Probability Estimation
+
+- The *unordered* nonparametric kernel estimator of $p(x)$ is
+\begin{equation*}
+  \hat p(x)=\frac{1}{n}\sum_{i=1}^n L(X_i,x,\lambda)
+\end{equation*}
+
+- $L(\cdot)$ is an *unordered* kernel function given by
+\begin{equation*}
+  L(X_i,x,\lambda)=\left\{
+    \begin{array}{ll}
+      1-\lambda & \mbox{ if } X_i=x\\
+      \lambda/(c-1) & \mbox{ otherwise}
+    \end{array}
+  \right.
+\end{equation*}
+
+- $\lambda$ is a *smoothing parameter* (counterpart to *bandwidth* $h$)
+
+## Example - Unordered Probability
+
+```{r npudensfactor}
+#| echo: true
+n <- 250
+set.seed(42)
+sex <- sample(c("Female","Male"),n,replace=TRUE,prob=c(.4,.6))
+sex <- factor(sex)
+phat <- npudens(~sex)
+plot(phat,plot.errors.method="bootstrap")
+```
+
+## Univariate Probability Estimation
+
+- Let $X\in\mathcal{D}=\{0,1,\dots,c-1\}$, $c\ge 2$, be *ordered*
+
+- The *ordered* nonparametric kernel estimator of $p(x)$ is
+\begin{equation*}
+  \hat p(x)=\frac{1}{n}\sum_{i=1}^n l(X_i,x,\lambda)
+\end{equation*}
+
+- $l(X_i,x,\lambda)$ is an *ordered* kernel function given by
+\begin{equation*}
+l(X_i,x,\lambda)=\frac{\lambda^{d_{xi}}}{\Lambda_i}
+\end{equation*}
+
+## Example - Ordered Probability
+
+```{r npudensordered}
+#| echo: true
+n <- 250
+set.seed(42)
+income <- sample(c("Low","Middle","High"),n,replace=TRUE,prob=c(.3,.5,.2))
+income <- ordered(income,levels=c("Low","Middle","High"))
+phat <- npudens(~income)
+plot(phat,plot.errors.method="bootstrap")
+```
+
+# Nonparametric Essentials <br> Mixed Data
+
+## Mixed Data Density Estimation
+
+- Statisticians know that $f(x)$ and $p(x)$ are both called *density* functions (the difference lies in their *measure* - the latter uses *counting* measure), so we adopt $f(x)$ 
+
+- Suppose you have a joint density defined over mixed data types, say, one numeric ($X^c\in\mathbb{R}$) and one unordered ($X^d\in\mathcal{D}$ with cardinality $c$)
+
+- We would like to model their joint density function $f(x)=f(x^c,x^d)$, where the superscripts $^c$ and $^d$ denote continuous and discrete data types, respectively, and where $x=(x^c,x^d)\in\mathbb{R}\times\mathcal{D}$
+
+## Mixed Data Density Estimation
+
+- The kernel estimator of $f(x^c,x^d)$ is 
+\begin{equation*}
+  \hat f(x^c,x^d)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h}K\left(\frac{X_i^c-x^c}{h}\right)L(X_i^d,x^d,\lambda)
+\end{equation*}
+
+- $K(\cdot)$ and $L(\cdot)$ are (univariate) *numeric* and *unordered* kernel functions, respectively
+
+- If you had one numeric and one *ordered* variable you would use the ordered kernel $l(X_i^d,x^d,\lambda)$ above
+
+- Now let's consider the *general* multivariate mixed data density case
+
+## Mixed Data Density Estimation
+
+-  In general multivariate settings, the probability density function $f(x)$ might use some combination of $q$ numeric, $r$ unordered, and $s$ ordered variable types ($x$ and $X_i$ are $q+r+s$-vectors)
+
+- The (product) kernel for estimating the joint density function is
+\begin{equation*}
+\prod_{j=1}^qh^{-1}_jK\left(\frac{x^c_j-X^c_{ij}}{h_j}\right)\prod_{j=1}^r L(X^u_{ij},x^u_j,\lambda^u_j)\prod_{j=1}^s l(X^o_{ij},x^o_j,\lambda^o_j)
+\end{equation*}
+
+- All we are doing here is using the *appropriate kernel function* for each data type
+
+## Mixed Data Density Estimation
+
+- Let $\gamma=(h_1,\dots,h_q,\lambda^u_1,\dots,\lambda^u_r,\lambda^o_1,\dots,\lambda^o_s)$
+
+- Call the product kernel function on the previous slide the *generalized* kernel, i.e., let the expression be written as
+\begin{equation*}
+K_\gamma(X_i,x)=\prod_{j=1}^q[\dots]\prod_{j=1}^r[\dots]\prod_{j=1}^s[\dots]
+\end{equation*}
+
+- With $x$ and $X_i$ being $q+r+s$ vectors, we write $\hat f(x)$ as 
+\begin{equation*}
+\hat f(x)=\frac{1}{n}\sum_{i=1}^nK_{\gamma}(X_i,x)
+\end{equation*}
+
+## Mixed Data Density Estimation
+
+- The key point is that *once you cast your data*, then the R functions in the `np` package know *exactly* what to do 
+
+- They *automatically* use the appropriate kernel for the appropriate data type (numeric, factor, ordered)
+
+- The data-driven bandwidth methods adjust automatically to the data type
+
+- Methods for inference (confidence intervals, significance testing in regression) do the same
+
+- Let's consider a quick example
+
+## Example - Mixed Data Density
+
+- We use Wooldridge's `wage1` data and consider two variables, one numeric (`lwage`) and one ordered (`numdep`)
+
+- `lwage` is the logarithm of an individual's average hourly earnings, and `numdep` is their number of dependents
+
+- The number of observations in each *cell* is tabulated in @tbl-wage1mixedtable
+
+  ```{r wage1mixedtable}
+  #| label: tbl-wage1mixedtable
+  #| tbl-cap: Counts of number of dependants present in 526 households by cell
+  library(np)
+  library(plot3D)
+  data(wage1)
+  knitr::kable(with(wage1,t(data.frame(numdep=sort(unique(numdep)),counts=as.numeric(table(numdep))))),
+               booktabs=TRUE,
+               linesep="")
+  ```
+  
+- We estimate $\hat f(lwage,numdep)$ and plot it in @fig-wage1mixeddensity
+
+## Example - Mixed Data Density
+
+- Below is the R code to estimate and plot the joint density (we use the `plot3D` package and reformat the data to render this plot)
+
+  ```{r wage1mixeddensitycode}
+  #| echo: true
+  #| eval: false
+  library(np)
+  library(plot3D)
+  data(wage1)
+  bw <- npudensbw(~lwage+ordered(numdep),data=wage1)
+  numdep.seq <- with(wage1,sort(unique(numdep)))
+  lwage.seq <- with(wage1,seq(min(lwage),max(lwage),length=50))
+  wage1.eval <- expand.grid(numdep=ordered(numdep.seq),lwage=lwage.seq)
+  fhat <- fitted(npudens(bws=bw,newdata=wage1.eval))
+  ## Hack since scatter3D converts ordered 0-6 to numeric 1-7
+  scatter3D(as.numeric(wage1.eval[,1])-1,wage1.eval[,2],fhat,
+            ylab="Log-Wage",
+            xlab="Number of Dependants",
+            zlab="Joint Density",
+            ticktype="detailed",
+            angle=15,
+            box=TRUE,
+            type="h",
+            grid=TRUE,
+            col="blue",
+            colkey=FALSE)
+  ```
+
+## Example - Mixed Data Density
+
+```{r wage1mixeddensity}
+#| label: fig-wage1mixeddensity
+#| fig-cap: Mixed-data bivariate kernel density estimate for the joint PDF of lwage (numeric) and numdeps (ordered)
+data(wage1)
+bw <- npudensbw(~lwage+ordered(numdep),data=wage1)
+numdep.seq <- with(wage1,sort(unique(numdep)))
+lwage.seq <- with(wage1,seq(min(lwage),max(lwage),length=50))
+wage1.eval <- expand.grid(numdep=ordered(numdep.seq),lwage=lwage.seq)
+fhat <- fitted(npudens(bws=bw,newdata=wage1.eval))
+## Hack since scatter3D converts ordered 0-6 to numeric 1-7
+scatter3D(as.numeric(wage1.eval[,1])-1,wage1.eval[,2],fhat,
+          ylab="Log-Wage",
+          xlab="Number of Dependants",
+          zlab="Joint Density",
+          ticktype="detailed",
+          angle=15,
+          box=TRUE,
+          type="h",
+          grid=TRUE,
+          col="blue",
+          colkey=FALSE)
+```
+
+
+# Nonparametric Regression
+
+## Nonparametric Regression
+
+- The conditional mean function $g(x):=\mathbb{E}(Y\vert X=x)$ for numeric $Y\in\mathbb{R}$ is *defined* as
+  \begin{equation}
+  \label{g(x)}
+  g(x)=\int y\frac{f(y,x)}{f(x)}\,dy=\frac{m(x)}{f(x)}
+  \end{equation}
+  
+- Let's start with $X\in\mathbb{R}^1$ (i.e., one numeric predictor)
+  
+- We aim to estimate the unknown regression model $y=g(x)+\varepsilon$ without assuming that, e.g., $g(x)=\beta_0+\beta_1x$
+
+::: { .notes }
+
+- After "We aim", mention the following:
+
+- People often use the same simple model for different datasets
+
+- Is it realistic to assume $\int y\frac{f(y,x)}{f(x)}\,dy=\beta_0+\beta_1x$ for *every* dataset?
+
+- Think of just the denominator, $f(x)$ - the *same* for all data?
+
+:::
+  
+## Nonparametric Regression
+
+- Regression is *hard* because $f(y,x)$ and $f(x)$ are unknown
+
+- They can be *consistently* estimated using $\hat f(y,x)$ and $\hat f(x)$
+
+- For continuously distributed $Y\in\mathbb{R}$, the *local constant* kernel regression estimator replaces the *unknown* $f(y,x)$ and $f(x)$ with $known$ $\hat f(y,x)$ and $\hat f(x)$ in \eqref{g(x)}, hence
+  \begin{equation}
+  \hat g(x)=\int y \frac{\hat f(y,x)}{\hat f(x)}\,dy=\frac{\hat m(x)}{\hat f(x)}
+  \end{equation}
+  
+## Nonparametric Regression
+
+- For $X\in\mathbb{R}^1$, we estimate $g(x)$ by replacing the unknown $f(x)$ in \eqref{g(x)} with
+\begin{equation*}
+  \hat f(x)=\frac{1}{nh}\sum_{i=1}^n K\left(\frac{x-X_i}{h}\right),
+  \end{equation*}
+  
+- and replacing the unknown $f(y,x)$ in \eqref{g(x)} with
+\begin{equation*}
+  \hat f(y,x)=\frac{1}{nh_yh}\sum_{i=1}^n K\left(\frac{y-Y_i}{h_y}\right)K\left(\frac{x-X_i}{h}\right)
+  \end{equation*}
+  
+## Nonparametric Regression
+
+-  Some mathematical simplification of $\hat g(x)$ leads to
+  \begin{equation*}
+  \hat g(x)=\sum_{i=1}^n Y_i\left\{\frac{K\left(\frac{X_i-x}{h}\right)}{\sum_{i=1}^n K\left(\frac{X_i-x}{h}\right)}\right\}=\sum_{i=1}^n Y_i W_i(x)
+  \end{equation*}
+  
+- With mixed data multivariate $X$ (i.e., $x$ and $X_i$ are $q+r+s$-vectors)
+we replace $K(\cdot)$ with $K_\gamma(X_i,x)$
+
+- The estimated nonparametric regression function is
+  \begin{equation}
+  y=\hat g(x)+\hat\epsilon
+  \end{equation}
+  
+::: { .notes }
+
+- Point out that $\sum_{i=1}^n Y_i W_i(x)$ is simply a *weighted average* of $Y_i$ where the weights are *local* (i.e., local to $x$)
+
+- So the weights change with $x$
+
+:::
+  
+## Simulated Data Illustration
+
+```{r npregcos}
+#| echo: true
+library(np)
+set.seed(42)
+n <- 1000
+x <- sort(runif(n))
+dgp <- cos(2*pi*x)
+y <- dgp + rnorm(n,sd=0.25*sd(dgp))
+ghat <- npreg(y~x)
+plot(x,y,cex=0.5,col="grey",xlab="X",ylab="Y")
+lines(x,dgp)
+lines(x,fitted(ghat),col=2)
+abline(ghat.ols <- lm(y~x),col=3)
+legend("top",c("DGP","Kernel","OLS"),col=1:3,lty=1,bty="n")
+```
+
+## Simulated Data Illustration: OLS {.smaller}
+
+How does the simple parametric linear model `ghat.ols` do for this simulated data?
+
+```{r cosolssummary}
+pander::pander(summary(ghat.ols))
+```
+
+::: callout-warning
+Oh oh... this linear parametric model truly sucks... the nonparametric model has an $R^2$ of `r pander::pander(ghat$R2)` (the parametric  model has an $R^2$ of `r pander::pander(summary(ghat.ols)$r.squared)` and a *negative* adjusted $R^2$)
+:::
+
+## Marginal Effects
+
+- The univariate $X$ *marginal effects function* is simply the first partial derivative function, and is defined as
+  \begin{align}
+  \beta(x)=\frac{d g(x)}{dx}
+  &=\frac{f(x)m'(x)- m(x)f'(x)}{f^2(x)}\notag\\
+  &=\frac{m'(x)}{f(x)}-g(x)\frac{f'(x)}{f(x)}
+  \label{beta(x)}
+  \end{align}
+  
+- We construct $\hat\beta(x)$ by replacing $f(x)$, $m'(x)$, $m(x)$, and $f'(x)$ in \eqref{beta(x)} with $\hat f(x)$, $\hat m'(x)$, $\hat m(x)$, and $\hat f'(x)$ 
+  
+## Marginal Effects
+
+- Recall the definitions of the conditional mean and marginal effects functions,  $g(x)$ and $\beta(x)$
+
+- They involve unknown joint and marginal densities and their derivatives, which are functions of $x$ and $y$
+
+- If you were tasked with estimating $\beta(x)$, it is hard to justify the assumption that $\beta(x)$ is *constant* (i.e., some constant $\beta$ that is *not* a function of $x$ like $\beta(x)$)
+
+- But this is *exactly* what is assumed for the popular linear regression model (i.e., $\beta(x)=d y/d x=\beta_1$, a *constant*)
+
+## Example - Simulated Marginal Effects
+
+```{r cosgradient}
+#| echo: true
+plot(ghat,gradients=TRUE,neval=250)
+lines(x,-2*pi*sin(2*pi*x),col=2)
+abline(h=coef(ghat.ols)[2],col=3)
+legend("topleft",c("Kernel ME","DGP ME","Linear ME"),col=1:3,lty=1,bty="n")
+```
+
+## Mixed Data Marginal Effects
+
+- Consider a multivariate conditional mean function $g(x)$ where $x$ is composed of $q$ continuous, $r$ unordered, and $s$ ordered predictors
+
+- As in the previous univariate example, if the $j$th predictor is continuous, i.e., $x_{j}\in\mathbb{R}$, then $\hat\beta_j(x)$ is the first partial derivative function of $\hat g(x)$ with respect to the $j$th predictor, i.e.,
+\begin{equation*}
+\hat\beta_j(x) = \frac{\partial\hat g(x)}{\partial x_j} = \frac{\hat m^{(j)}(x)}{\hat f(x)}-\hat g(x)\frac{\hat f^{(j)}(x)}{\hat f(x)}
+\end{equation*}
+
+## Multivariate Mixed-Data Marginal Effects
+
+- If the  $j$th predictor is unordered in $\mathcal{D}=\{a,b,c\}$, then $\hat\beta_j(x)$ is the difference between $\hat g(x)$ when $x^u_j=b$ versus $\hat g(x)$ when $x^u_j=a$, and between  $\hat g(x)$ evaluated at $x^u_j=c$ versus at $x^u_j=a$ ($a$ is the *base* category)
+\begin{equation*}
+\hat\beta_j(x)=\hat g(x_{(-j)},x_{j}=l) - \hat g(x_{(-j)},x_{j}=a),\, l=b,c
+\end{equation*}
+
+- If the $j$th predictor is ordered we have two options, namely, to take differences as in the unordered case, or to take differences between *successive* elements of the ordered set (i.e., between $a$ and $b$ then between $b$ and $c$)
+
+## Multivariate Regression 
+
+- We use Wooldridge's `wage1` data containing numeric and categorical predictors <a href='https://rdrr.io/pkg/np/man/data-wage1.html'>(link to wage1 description)</a>
+
+- We regress `lwage` on categorical predictors `female` and `married` and numeric predictors `educ`, `exper` and `tenure`
+
+- The formula for the regression models is
+
+  `lwage~female+married+educ+exper+tenure`
+  
+- For the nonparametric model this just lists the predictors
+
+- For the parametric model it imposes linear structure
+
+## Multivariate Nonparametric Regression {.smaller}
+
+```{r wage1summary}
+#| echo: true
+library(np)
+data(wage1)
+ghat <- npreg(lwage ~ female + married + educ + exper + tenure, data=wage1, regtype="ll")
+summary(ghat)
+```
+
+## Partial Regression Plots {.smaller}
+
+```{r wage1plot}
+#| echo: true
+## We run out of graph axis dimensions with > 2 predictors, so it is common to
+## construct partial plots that plot the fitted model versus each predictor
+## separately holding the off-axis predictors at, say, their median value (you
+## can change this - see ?npplot and the argument xq)
+par(mfrow=c(2,3))
+plot(ghat,plot.errors.method="bootstrap")
+```
+
+## Marginal Effects (Gradient) Plots {.smaller}
+
+```{r wage1gradientplot}
+#| echo: true
+par(mfrow=c(2,3))
+plot(ghat,gradients=TRUE,plot.errors.method="bootstrap")
+```
+
+## Testing $H_0\colon\beta_j=0$ (OLS Significance) {.smaller}
+
+A simple $t$-test is used to test $H_0\colon \beta_j=0$
+
+```{r wage1sigtestols}
+#| echo: true
+ghat.ols <- lm(lwage ~ female + married + educ + exper + tenure, data=wage1)
+summary(ghat.ols)
+```
+
+## Testing $H_0\colon\beta_j(x)=0$ (Significance)
+
+- The null and alternative hypotheses are
+\begin{align*}
+  H_0\colon\quad& \beta_j(x) = 0\hbox{ for all } x \hbox{ (a.e.)}\\
+  H_A\colon\quad& \beta_j(x) \ne 0 \hbox{ for some }x\hbox{ on a set
+  with + measure}
+\end{align*}
+
+- A feasible test statistic $\hat\lambda\ge 0$ is given by
+\begin{equation*}
+  \hat\lambda=\left\{
+    \begin{array}{ll}
+       n^{-1}\sum_{i=1}^n \hat\beta_j(X_i)^2&\text{ if }x_j\in\mathbb{R}\\
+       n^{-1}\sum_{i=1}^n \sum_{l=1}^{c-1}\hat\beta_j(X_i)^2 & \text{ if }x_j\in\mathcal{D}
+     \end{array}
+   \right.
+\end{equation*}
+
+- A bootstrap procedure provides the null distribution
+
+## Testing $H_0\colon\beta_j(x)=0$ (Significance) {.smaller}
+
+A bootstrap $\lambda$-test is used to test $H_0\colon \beta_j(x)=0\,\forall\, x$ (a.e.)
+
+```{r wage1sigtestnp}
+#| echo: true
+npsigtest(ghat)
+```
+
+## Counterfactuals
+
+- The R function `fitted(...)` extracts fitted values for each sample observation
+
+- Suppose we want fitted values for *specific value(s)* of the predictor(s)
+
+- We use the R function `predict(...,newdata=...)` where `newdata` points to a data frame containing *named and cast* $X$ values for which we want predictions
+
+- Let's generate a data frame called `df` containing 1 row to generate the predicted log-wage for single males having median education, job tenure and job experience
+
+## Counterfactuals
+
+```{r wage1preddf}
+#| echo: true
+attach(wage1)
+df <- data.frame(female = factor("Male", levels=levels(female)),
+                 married = factor("Notmarried", levels=levels(married)),
+                 educ = median(educ),
+                 tenure = median(tenure),
+                 exper = median(exper))
+head(df)
+predict(ghat, newdata=df)
+## Or you could use ghat <- npreg(...,newdata=df) and fitted(ghat) 
+## ghat <- npreg(lwage ~ female + married + educ + exper + tenure, 
+##               data=wage1,
+##               regtype="ll", 
+##               newdata=df)
+## fitted(ghat)
+```
+  
+If `df` had multiple rows we would get a prediction for each row (i.e., a vector of predictions)
+
+# Quarto: Technical, Reproducible Documents
+
+## A Sub-Optimal Workflow
+
+- The old way of doing research is to run your analyses using R, then to manually copy figures and tables into a word processor (e.g., MS Word) or typesetter (e.g., $\rm\TeX$) 
+
+- So you end up maintaining separate code, figures, and narrative files and being their go-between coordinator
+
+- And you have pre-committed to an output format!
+
+- Then you find a code or data error and need to redo figures, tables, etc., or need to change output formats
+
+- This is a brutally inefficient and error prone process because it requires a go-between (i.e., you!)
+
+## A Streamlined Workflow
+
+- Quarto places your code and narrative into the same file
+
+- Relieved of coordination duties, new possibilities emerge
+
+  - you now *automatically* refer to analytical results
+
+  - you now *conditionally* describe analytical results
+  
+- If code or data is updated, figures and tables are automatically updated in your output document
+
+- Perhaps best of all, your Quarto file can be *rendered* into any imaginable output format seamlessly via <a href="https://pandoc.org">Pandoc</a>
+
+- (<a href="https://quarto.org">Quarto</a>, <a href="https://github.com">GitHub</a> and <a href=https://rstudio.github.io/renv>renv</a> are all supported in <a href="https://posit.co/products/open-source/rstudio/">RStudio</a>)
+
+## RStudio Quarto Editor Interface
+  
+![](images/rstudio_quarto.png)
+
+# Summary
+
+- We have barely scratched the surface and have skipped technical details
+
+- However, you now have some perspective and have access to modern tools
+
+- You can consult @racine_2019 if you wish to go deeper (detailed proofs, R code, examples etc.)
+
+- Many of the links in these slides may also be useful
+
+- You may contact me at <a href="mailto:racinej@mcmaster.ca">racinej\@mcmaster.ca</a>
+
+- It has been my pleasure to guide you! ¡Adiós!
+
+# References

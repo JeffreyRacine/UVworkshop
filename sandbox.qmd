@@ -1,0 +1,42 @@
+---
+title: "Testing Quarto"
+title-block-banner: true
+author: "Insert Your Name Here"
+format: html
+editor: source
+bibliography: veracruz.bib
+---
+
+```{r global_options, include=FALSE, cache=FALSE}
+## Set some options for knitr to apply globally
+knitr::opts_chunk$set(echo=FALSE,
+                      autodep=TRUE,
+                      message=FALSE,
+                      warning=FALSE,
+                      out.width="50%",
+                      fig.asp=0.75,
+                      fig.align='center')
+library(np)
+options(np.messages=FALSE)
+```
+
+# Introduction
+
+This is my first attempt at using Quarto for reproducible research. For example, see @fig-plot for a bivariate kernel density estimate of a bimodal distribution [@racine_2019].
+
+```{r}
+#| label: fig-plot
+#| fig-cap: "Plot"
+par(cex=0.75)
+data(faithful)
+fhat <- npudens(~waiting+eruptions,data=faithful)
+plot(fhat,xtrim=-0.1,view="fixed",main="")
+```
+
+You can do inline math, i.e., $\hat\beta=(X'X)^{-1}X'Y$, or display math, i.e., OLS (@eq-ols) 
+ 
+ $$\hat\beta=(X'X)^{-1}X'Y$$ {#eq-ols} 
+ 
+(display math appears on a separate line from the narrative.)
+
+And you can do inline R computation, e.g., the mean of eruptions is `r pander::pander(mean(faithful$eruptions))` minutes (this valuei was not pre-computed but is extracted from the data used in the above figure as this file is rendered).
