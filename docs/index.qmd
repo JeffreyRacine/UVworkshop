@@ -1,8 +1,10 @@
 ---
 title: Nonparametric Workshop
-date: 5/19/2024
+date: 5/20/2024
 date-format: full
-subtitle: Veracruz, Mexico
+subtitle: |
+  |  XIII FORO INTERNACIONAL DE ESTADÍSTICA APLICADA
+  | Veracruz, Mexico
 author: Jeffrey S. Racine
 institute: McMaster University
 format:
