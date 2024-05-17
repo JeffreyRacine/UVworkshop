@@ -1,11 +1,11 @@
 libraries	library
 datatype	c	class	factor	levels	ordered	rnorm	sample	set.seed
-parnpeval	dnorm	mean	plot	rnorm	sd	set.seed	sort
+parnpeval	dnorm	mean	plot	rnorm	sd	set.seed	shapiro.test	sort
 shapiro	::	shapiro.test	x
 shapiroeruptions	::	data	eruptions	faithful	shapiro.test	with
-densityeruptions	$	data	density	faithful	plot	rug
+densityeruptions	?	$	data	density	faithful	plot	rug
 densityeruptionscomp	$	c	data	density	dnorm	eruptions	faithful	legend	lines	mean	plot	rug	sd	with
-histdensityeruptions	$	c	data	density	eruptions	faithful	fitted	hist	library	lines	npudens	rug	with
+histdensityeruptions	?	$	c	data	density	eruptions	faithful	fitted	hist	library	lines	npudens	rug	with
 npudenseruptions	~	$	data	faithful	library	npudens	plot	summary
 npudenseruptionswaiting	~	data	faithful	library	npudens	plot
 npudensfactor	~	c	factor	npudens	plot	sample	set.seed
@@ -22,3 +22,5 @@ wage1gradientplot	c	ghat	par	plot
 wage1sigtestols	~	lm	summary	wage1
 wage1sigtestnp	ghat	npsigtest
 wage1preddf	attach	data.frame	educ	exper	factor	female	ghat	head	levels	married	median	predict	tenure	wage1
+echo : true	::	data	eruptions	faithful	shapiro.test	with
+shapiroeruptionscode	?	data	eruptions	faithful	shapiro.test	with

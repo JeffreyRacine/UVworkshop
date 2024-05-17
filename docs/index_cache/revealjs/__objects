@@ -4,8 +4,8 @@ parnpeval	n	x	.Random.seed
 shapiro	
 shapiroeruptions	faithful
 densityeruptions	
-densityeruptionscomp	
-histdensityeruptions	
+densityeruptionscomp	eruptions.eval
+histdensityeruptions	eruptions.eval
 npudenseruptions	fhat
 npudenseruptionswaiting	fhat
 npudensfactor	n	phat	sex
@@ -22,3 +22,5 @@ wage1gradientplot
 wage1sigtestols	ghat.ols
 wage1sigtestnp	
 wage1preddf	df
+echo : true	faithful
+shapiroeruptionscode	

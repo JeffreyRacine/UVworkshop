@@ -527,14 +527,17 @@ Jeffrey S. Racine
 <li class="fragment"><p>It is <em>crucial</em> to understand different data types in R</p></li>
 <li class="fragment"><p>There are three R functions we will use: <code>numeric()</code>, <code>factor()</code>, and <code>ordered()</code></p></li>
 <li class="fragment"><p>These correspond to data that are <em>numbers</em>, <em>unordered categories</em>, and <em>ordered categories</em>, respectively</p></li>
-<li class="fragment"><p>Pay careful attention to the following example</p></li>
+<li class="fragment"><p>Pay careful attention to the following example of how we <em>cast</em> our data in R <em>prior</em> to analyzing it</p></li>
 </ul>
 </section>
+<section id="rstudio-r-editor-interface" class="slide level2 center">
+<h2>RStudio R Editor Interface</h2>
+
+<img data-src="images/rstudio_rcode.png" class="r-stretch"></section>
 <section id="r-and-data-types-1" class="slide level2 smaller center">
 <h2>R and Data Types</h2>
 <ul>
-<li class="fragment"><p>Below is an example of how we <em>cast</em> our data in R <em>prior</em> to analyzing it</p></li>
-<li class="fragment"><p>Copy and paste this into a new R file in RStudio, then run it line-by-line</p>
+<li class="fragment"><p>Copy and paste this (right-click on the clipboard icon in the upper right of the code box) into a new R file in RStudio (in RStudio select the menu <code>"File"</code> -&gt; <code>"New File"</code> -&gt; <code>"R Script"</code> which will open in the upper left pane by default), and next execute it line-by-line (in RStudio position your cursor on the first line of the R code and then right-click on the <code>"Run"</code> icon)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="do">## Generate some data: sex (unordered categorical), income (ordered categorical),</span></span>
 <span id="cb1-2"><a href=""></a><span class="do">## and height (numeric)</span></span>
@@ -551,7 +554,7 @@ Jeffrey S. Racine
 <span id="cb1-13"><a href=""></a><span class="do">## income is categorical and ordered, but we need to ensure intended order (it</span></span>
 <span id="cb1-14"><a href=""></a><span class="do">## will assume alphabetical ordering otherwise). Suppose you ignore it - let's</span></span>
 <span id="cb1-15"><a href=""></a><span class="do">## see what happens when we just cast as type ordered() using defaults</span></span>
-<span id="cb1-16"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">ordered</span>(income)</span>
+<span id="cb1-16"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">ordered</span>(income);income</span>
 <span id="cb1-17"><a href=""></a><span class="do">## The levels are in alphabetical order, which we don't want</span></span>
 <span id="cb1-18"><a href=""></a><span class="fu">levels</span>(income)</span>
 <span id="cb1-19"><a href=""></a><span class="do">## We shall reorder the ordered factor levels as intended using levels=...</span></span>
@@ -578,11 +581,7 @@ Jeffrey S. Racine
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="rstudio-r-editor-interface" class="slide level2 center">
-<h2>RStudio R Editor Interface</h2>
-
-<img data-src="images/rstudio_rcode.png" class="r-stretch"></section></section>
+</section></section>
 <section>
 <section id="background-density-estimation" class="title-slide slide level1 center">
 <h1>Background <br> Density Estimation</h1>
@@ -598,10 +597,17 @@ Jeffrey S. Racine
 <span id="cb2-4"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
 <span id="cb2-5"><a href=""></a><span class="do">## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")</span></span>
 <span id="cb2-6"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(x)</span>
-<span id="cb2-7"><a href=""></a><span class="do">## Since we simulated the data, let's plot the true, known, parametric density</span></span>
-<span id="cb2-8"><a href=""></a><span class="do">## (we can't do this with actual data because the density of such data is, in</span></span>
-<span id="cb2-9"><a href=""></a><span class="do">## general, unknown)</span></span>
-<span id="cb2-10"><a href=""></a><span class="fu">plot</span>(x,<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="fu">mean</span>(x),<span class="at">sd=</span><span class="fu">sd</span>(x)),<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"Parametric Density Estimate"</span>,<span class="at">xlab=</span><span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href=""></a><span class="do">## Conduct a test of normality</span></span>
+<span id="cb2-8"><a href=""></a><span class="fu">shapiro.test</span>(x)</span>
+<span id="cb2-9"><a href=""></a><span class="do">## </span></span>
+<span id="cb2-10"><a href=""></a><span class="do">##  Shapiro-Wilk normality test</span></span>
+<span id="cb2-11"><a href=""></a><span class="do">## </span></span>
+<span id="cb2-12"><a href=""></a><span class="do">## data:  x</span></span>
+<span id="cb2-13"><a href=""></a><span class="do">## W = 0.99882, p-value = 0.767</span></span>
+<span id="cb2-14"><a href=""></a><span class="do">## Since we simulated the data, let's plot the true, known, parametric density</span></span>
+<span id="cb2-15"><a href=""></a><span class="do">## (we can't do this with actual data because the density of such data is, in</span></span>
+<span id="cb2-16"><a href=""></a><span class="do">## general, unknown)</span></span>
+<span id="cb2-17"><a href=""></a><span class="fu">plot</span>(x,<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="fu">mean</span>(x),<span class="at">sd=</span><span class="fu">sd</span>(x)),<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"Parametric Density Estimate"</span>,<span class="at">xlab=</span><span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
@@ -640,7 +646,7 @@ Jeffrey S. Racine
 </table>
 </div>
 </div></li>
-<li class="fragment"><p>This is <em>simulated normal</em> data, and we fail to reject the null</p>
+<li class="fragment"><p>This is <em>simulated normal</em> data and we <em>do not</em> reject the null that the data are normally distributed</p>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -650,7 +656,7 @@ Jeffrey S. Racine
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>What if we got the null density wrong (i.e., what if we rejected the null)?</p>
+<p>What if the null was wrong (i.e., what if we rejected the null and it was not a Type I error)?</p>
 </div>
 </div>
 </div></li>
@@ -660,6 +666,11 @@ Jeffrey S. Racine
 <h2>Parametric or Nonparametric?</h2>
 <ul>
 <li class="fragment"><p>Now let’s test normality for actual data, <code>eruptions</code></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb3-2"><a href=""></a>?faithful</span>
+<span id="cb3-3"><a href=""></a><span class="fu">with</span>(faithful,<span class="fu">shapiro.test</span>(eruptions))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table style="width:49%;">
@@ -711,11 +722,12 @@ Jeffrey S. Racine
 <section id="parametric-or-nonparametric-4" class="slide level2 center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
-<li class="fragment"><p>Below is a nonparametric density estimate and data <em>rug</em> for the <code>eruptions</code> data (it is bi-modal <em>and</em> asymmetric)</p>
+<li class="fragment"><p>Below is a nonparametric density estimate estimate using base R’s <code>density()</code> function and a data <em>rug</em> for the <code>eruptions</code> data (it is bi-modal <em>and</em> asymmetric)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb3-2"><a href=""></a><span class="fu">plot</span>(<span class="fu">density</span>(faithful<span class="sc">$</span>eruptions),<span class="at">main=</span><span class="st">""</span>)</span>
-<span id="cb3-3"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb4-2"><a href=""></a>?density</span>
+<span id="cb4-3"><a href=""></a><span class="fu">plot</span>(<span class="fu">density</span>(faithful<span class="sc">$</span>eruptions),<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb4-4"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>
@@ -731,22 +743,23 @@ Jeffrey S. Racine
 </div></section><section id="parametric-or-nonparametric-5" class="slide level2 center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
-<li class="fragment"><p>Below is a nonparametric and <em>normal</em> parametric estimate (recall the normal parametric model has been <em>rejected</em>)</p>
+<li class="fragment"><p>Below is a nonparametric estimate using base R’s <code>density()</code> function and a <em>normal</em> parametric estimate using base R’s <code>dnorm()</code> function (recall the normal parametric model has been <em>rejected</em> here)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb4-2"><a href=""></a><span class="fu">plot</span>(<span class="fu">density</span>(faithful<span class="sc">$</span>eruptions),<span class="at">main=</span><span class="st">""</span>)</span>
-<span id="cb4-3"><a href=""></a><span class="fu">with</span>(faithful,<span class="fu">lines</span>(<span class="fu">density</span>(eruptions)<span class="sc">$</span>x,</span>
-<span id="cb4-4"><a href=""></a>              <span class="fu">dnorm</span>(<span class="fu">density</span>(eruptions)<span class="sc">$</span>x,</span>
-<span id="cb4-5"><a href=""></a>              <span class="at">mean=</span><span class="fu">mean</span>(eruptions),</span>
-<span id="cb4-6"><a href=""></a>              <span class="at">sd=</span><span class="fu">sd</span>(eruptions)),</span>
-<span id="cb4-7"><a href=""></a>              <span class="at">col=</span><span class="dv">2</span>,</span>
-<span id="cb4-8"><a href=""></a>              <span class="at">lty=</span><span class="dv">2</span>))</span>
-<span id="cb4-9"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span>
-<span id="cb4-10"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
-<span id="cb4-11"><a href=""></a>       <span class="fu">c</span>(<span class="st">"Nonparametric"</span>,<span class="st">"Parametric"</span>),</span>
-<span id="cb4-12"><a href=""></a>       <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
-<span id="cb4-13"><a href=""></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
-<span id="cb4-14"><a href=""></a>       <span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb5-2"><a href=""></a>eruptions.eval <span class="ot">&lt;-</span> <span class="fu">density</span>(faithful<span class="sc">$</span>eruptions)<span class="sc">$</span>x</span>
+<span id="cb5-3"><a href=""></a><span class="fu">plot</span>(<span class="fu">density</span>(faithful<span class="sc">$</span>eruptions),<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb5-4"><a href=""></a><span class="fu">with</span>(faithful,<span class="fu">lines</span>(eruptions.eval,</span>
+<span id="cb5-5"><a href=""></a>              <span class="fu">dnorm</span>(eruptions.eval,</span>
+<span id="cb5-6"><a href=""></a>              <span class="at">mean=</span><span class="fu">mean</span>(eruptions),</span>
+<span id="cb5-7"><a href=""></a>              <span class="at">sd=</span><span class="fu">sd</span>(eruptions)),</span>
+<span id="cb5-8"><a href=""></a>              <span class="at">col=</span><span class="dv">2</span>,</span>
+<span id="cb5-9"><a href=""></a>              <span class="at">lty=</span><span class="dv">2</span>))</span>
+<span id="cb5-10"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span>
+<span id="cb5-11"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb5-12"><a href=""></a>       <span class="fu">c</span>(<span class="st">"Nonparametric"</span>,<span class="st">"Parametric"</span>),</span>
+<span id="cb5-13"><a href=""></a>       <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb5-14"><a href=""></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb5-15"><a href=""></a>       <span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>
@@ -787,18 +800,20 @@ Jeffrey S. Racine
 <section id="non-smooth-or-smooth" class="slide level2 center">
 <h2>Non-Smooth or Smooth?</h2>
 <ul>
-<li class="fragment"><p>Below are non-smooth and smooth nonparametric density estimates for the <em>numeric</em> variable <code>eruptions</code></p>
+<li class="fragment"><p>Below are non-smooth and smooth nonparametric density estimates for the <em>numeric</em> variable <code>eruptions</code> (here we use <code>hist()</code> and the np package’s <code>npudens()</code> function, respectively)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb5-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb5-3"><a href=""></a><span class="fu">hist</span>(faithful<span class="sc">$</span>eruptions,<span class="at">prob=</span><span class="cn">TRUE</span>,</span>
-<span id="cb5-4"><a href=""></a>     <span class="at">main=</span><span class="st">""</span>,</span>
-<span id="cb5-5"><a href=""></a>     <span class="at">xlab=</span><span class="st">"Eruptions"</span>,</span>
-<span id="cb5-6"><a href=""></a>     <span class="at">breaks=</span><span class="dv">20</span>,</span>
-<span id="cb5-7"><a href=""></a>     <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">1.25</span>,<span class="fl">5.5</span>))</span>
-<span id="cb5-8"><a href=""></a><span class="fu">with</span>(faithful,<span class="fu">lines</span>(<span class="fu">density</span>(eruptions)<span class="sc">$</span>x,</span>
-<span id="cb5-9"><a href=""></a>     <span class="fu">fitted</span>(<span class="fu">npudens</span>(<span class="at">tdat=</span>eruptions,<span class="at">edat=</span><span class="fu">density</span>(eruptions)<span class="sc">$</span>x))))</span>
-<span id="cb5-10"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb6-2"><a href=""></a>?npudens</span>
+<span id="cb6-3"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb6-4"><a href=""></a>eruptions.eval <span class="ot">&lt;-</span> <span class="fu">density</span>(faithful<span class="sc">$</span>eruptions)<span class="sc">$</span>x</span>
+<span id="cb6-5"><a href=""></a><span class="fu">hist</span>(faithful<span class="sc">$</span>eruptions,<span class="at">prob=</span><span class="cn">TRUE</span>,</span>
+<span id="cb6-6"><a href=""></a>     <span class="at">main=</span><span class="st">""</span>,</span>
+<span id="cb6-7"><a href=""></a>     <span class="at">xlab=</span><span class="st">"Eruptions"</span>,</span>
+<span id="cb6-8"><a href=""></a>     <span class="at">breaks=</span><span class="dv">20</span>,</span>
+<span id="cb6-9"><a href=""></a>     <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">1.25</span>,<span class="fl">5.5</span>))</span>
+<span id="cb6-10"><a href=""></a><span class="fu">with</span>(faithful,<span class="fu">lines</span>(eruptions.eval,</span>
+<span id="cb6-11"><a href=""></a>     <span class="fu">fitted</span>(<span class="fu">npudens</span>(<span class="at">tdat=</span>eruptions,<span class="at">edat=</span>eruptions.eval))))</span>
+<span id="cb6-12"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>
@@ -876,24 +891,24 @@ f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x)
 <ul>
 <li class="fragment"><p>We call <code>npudens()</code> with option <code>bwmethod="cv.ls"</code></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb6-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb6-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions,<span class="at">bwmethod=</span><span class="st">"cv.ls"</span>,<span class="at">data=</span>faithful)</span>
-<span id="cb6-4"><a href=""></a><span class="fu">summary</span>(fhat<span class="sc">$</span>bws)</span>
-<span id="cb6-5"><a href=""></a><span class="do">## </span></span>
-<span id="cb6-6"><a href=""></a><span class="do">## Data (272 observations, 1 variable(s)):</span></span>
-<span id="cb6-7"><a href=""></a><span class="do">## </span></span>
-<span id="cb6-8"><a href=""></a><span class="do">## Bandwidth Selection Method: Least Squares Cross-Validation</span></span>
-<span id="cb6-9"><a href=""></a><span class="do">## Formula: ~eruptions</span></span>
-<span id="cb6-10"><a href=""></a><span class="do">## Bandwidth Type: Fixed</span></span>
-<span id="cb6-11"><a href=""></a><span class="do">## Objective Function Value: 0.4284678 (achieved on multistart 1)</span></span>
-<span id="cb6-12"><a href=""></a><span class="do">## </span></span>
-<span id="cb6-13"><a href=""></a><span class="do">## Var. Name: eruptions Bandwidth: 0.1026276 Scale Factor: 0.3310986</span></span>
-<span id="cb6-14"><a href=""></a><span class="do">## </span></span>
-<span id="cb6-15"><a href=""></a><span class="do">## Continuous Kernel Type: Second-Order Gaussian</span></span>
-<span id="cb6-16"><a href=""></a><span class="do">## No. Continuous Vars.: 1</span></span>
-<span id="cb6-17"><a href=""></a><span class="do">## Estimation Time: 0.09 seconds</span></span>
-<span id="cb6-18"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">neval=</span><span class="dv">250</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb7-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb7-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions,<span class="at">bwmethod=</span><span class="st">"cv.ls"</span>,<span class="at">data=</span>faithful)</span>
+<span id="cb7-4"><a href=""></a><span class="fu">summary</span>(fhat<span class="sc">$</span>bws)</span>
+<span id="cb7-5"><a href=""></a><span class="do">## </span></span>
+<span id="cb7-6"><a href=""></a><span class="do">## Data (272 observations, 1 variable(s)):</span></span>
+<span id="cb7-7"><a href=""></a><span class="do">## </span></span>
+<span id="cb7-8"><a href=""></a><span class="do">## Bandwidth Selection Method: Least Squares Cross-Validation</span></span>
+<span id="cb7-9"><a href=""></a><span class="do">## Formula: ~eruptions</span></span>
+<span id="cb7-10"><a href=""></a><span class="do">## Bandwidth Type: Fixed</span></span>
+<span id="cb7-11"><a href=""></a><span class="do">## Objective Function Value: 0.4284678 (achieved on multistart 1)</span></span>
+<span id="cb7-12"><a href=""></a><span class="do">## </span></span>
+<span id="cb7-13"><a href=""></a><span class="do">## Var. Name: eruptions Bandwidth: 0.1026276 Scale Factor: 0.3310986</span></span>
+<span id="cb7-14"><a href=""></a><span class="do">## </span></span>
+<span id="cb7-15"><a href=""></a><span class="do">## Continuous Kernel Type: Second-Order Gaussian</span></span>
+<span id="cb7-16"><a href=""></a><span class="do">## No. Continuous Vars.: 1</span></span>
+<span id="cb7-17"><a href=""></a><span class="do">## Estimation Time: 0.09 seconds</span></span>
+<span id="cb7-18"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">neval=</span><span class="dv">250</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>
@@ -931,10 +946,10 @@ f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x)
 <li class="fragment"><p>Note we again use the function <code>npudens()</code> with the formula interface, but the formula now lists all variables separated by a <code>+</code> sign</p></li>
 <li class="fragment"><p>Note since we do not specify the argument <code>bwmethod=</code> it uses the default (<code>bwmethod=cv.ml</code>, i.e., likelihood cross-validation)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb7-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb7-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions<span class="sc">+</span>waiting,<span class="at">data=</span>faithful)</span>
-<span id="cb7-4"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">theta=</span><span class="dv">330</span>,<span class="at">xtrim=</span><span class="sc">-</span><span class="fl">0.05</span>,<span class="at">neval=</span><span class="dv">75</span>,<span class="at">view=</span><span class="st">"fixed"</span>,<span class="at">main=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb8-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
+<span id="cb8-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions<span class="sc">+</span>waiting,<span class="at">data=</span>faithful)</span>
+<span id="cb8-4"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">theta=</span><span class="dv">330</span>,<span class="at">xtrim=</span><span class="sc">-</span><span class="fl">0.05</span>,<span class="at">neval=</span><span class="dv">75</span>,<span class="at">view=</span><span class="st">"fixed"</span>,<span class="at">main=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>
@@ -991,12 +1006,12 @@ L(X_i,x,\lambda)=\left\{
 <section id="example---unordered-probability" class="slide level2 center">
 <h2>Example - Unordered Probability</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">250</span></span>
-<span id="cb8-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb8-3"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>),n,<span class="at">replace=</span><span class="cn">TRUE</span>,<span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">4</span>,.<span class="dv">6</span>))</span>
-<span id="cb8-4"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(sex)</span>
-<span id="cb8-5"><a href=""></a>phat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>sex)</span>
-<span id="cb8-6"><a href=""></a><span class="fu">plot</span>(phat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb9-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-3"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>),n,<span class="at">replace=</span><span class="cn">TRUE</span>,<span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">4</span>,.<span class="dv">6</span>))</span>
+<span id="cb9-4"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(sex)</span>
+<span id="cb9-5"><a href=""></a>phat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>sex)</span>
+<span id="cb9-6"><a href=""></a><span class="fu">plot</span>(phat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/npudensfactor-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -1015,12 +1030,12 @@ l(X_i,x,\lambda)=\frac{\lambda^{d_{xi}}}{\Lambda_i}
 <section id="example---ordered-probability" class="slide level2 center">
 <h2>Example - Ordered Probability</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">250</span></span>
-<span id="cb9-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb9-3"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Low"</span>,<span class="st">"Middle"</span>,<span class="st">"High"</span>),n,<span class="at">replace=</span><span class="cn">TRUE</span>,<span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">3</span>,.<span class="dv">5</span>,.<span class="dv">2</span>))</span>
-<span id="cb9-4"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">ordered</span>(income,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Low"</span>,<span class="st">"Middle"</span>,<span class="st">"High"</span>))</span>
-<span id="cb9-5"><a href=""></a>phat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>income)</span>
-<span id="cb9-6"><a href=""></a><span class="fu">plot</span>(phat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb10-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb10-3"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Low"</span>,<span class="st">"Middle"</span>,<span class="st">"High"</span>),n,<span class="at">replace=</span><span class="cn">TRUE</span>,<span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">3</span>,.<span class="dv">5</span>,.<span class="dv">2</span>))</span>
+<span id="cb10-4"><a href=""></a>income <span class="ot">&lt;-</span> <span class="fu">ordered</span>(income,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Low"</span>,<span class="st">"Middle"</span>,<span class="st">"High"</span>))</span>
+<span id="cb10-5"><a href=""></a>phat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>income)</span>
+<span id="cb10-6"><a href=""></a><span class="fu">plot</span>(phat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/npudensordered-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
@@ -1131,26 +1146,26 @@ Table&nbsp;1: Counts of number of dependants present in 526 households by cell
 <ul>
 <li class="fragment"><p>Below is the R code to estimate and plot the joint density (we use the <code>plot3D</code> package and reformat the data to render this plot)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb10-2"><a href=""></a><span class="fu">library</span>(plot3D)</span>
-<span id="cb10-3"><a href=""></a><span class="fu">data</span>(wage1)</span>
-<span id="cb10-4"><a href=""></a>bw <span class="ot">&lt;-</span> <span class="fu">npudensbw</span>(<span class="sc">~</span>lwage<span class="sc">+</span><span class="fu">ordered</span>(numdep),<span class="at">data=</span>wage1)</span>
-<span id="cb10-5"><a href=""></a>numdep.seq <span class="ot">&lt;-</span> <span class="fu">with</span>(wage1,<span class="fu">sort</span>(<span class="fu">unique</span>(numdep)))</span>
-<span id="cb10-6"><a href=""></a>lwage.seq <span class="ot">&lt;-</span> <span class="fu">with</span>(wage1,<span class="fu">seq</span>(<span class="fu">min</span>(lwage),<span class="fu">max</span>(lwage),<span class="at">length=</span><span class="dv">50</span>))</span>
-<span id="cb10-7"><a href=""></a>wage1.eval <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">numdep=</span><span class="fu">ordered</span>(numdep.seq),<span class="at">lwage=</span>lwage.seq)</span>
-<span id="cb10-8"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">fitted</span>(<span class="fu">npudens</span>(<span class="at">bws=</span>bw,<span class="at">newdata=</span>wage1.eval))</span>
-<span id="cb10-9"><a href=""></a><span class="do">## Hack since scatter3D converts ordered 0-6 to numeric 1-7</span></span>
-<span id="cb10-10"><a href=""></a><span class="fu">scatter3D</span>(<span class="fu">as.numeric</span>(wage1.eval[,<span class="dv">1</span>])<span class="sc">-</span><span class="dv">1</span>,wage1.eval[,<span class="dv">2</span>],fhat,</span>
-<span id="cb10-11"><a href=""></a>          <span class="at">ylab=</span><span class="st">"Log-Wage"</span>,</span>
-<span id="cb10-12"><a href=""></a>          <span class="at">xlab=</span><span class="st">"Number of Dependants"</span>,</span>
-<span id="cb10-13"><a href=""></a>          <span class="at">zlab=</span><span class="st">"Joint Density"</span>,</span>
-<span id="cb10-14"><a href=""></a>          <span class="at">ticktype=</span><span class="st">"detailed"</span>,</span>
-<span id="cb10-15"><a href=""></a>          <span class="at">angle=</span><span class="dv">15</span>,</span>
-<span id="cb10-16"><a href=""></a>          <span class="at">box=</span><span class="cn">TRUE</span>,</span>
-<span id="cb10-17"><a href=""></a>          <span class="at">type=</span><span class="st">"h"</span>,</span>
-<span id="cb10-18"><a href=""></a>          <span class="at">grid=</span><span class="cn">TRUE</span>,</span>
-<span id="cb10-19"><a href=""></a>          <span class="at">col=</span><span class="st">"blue"</span>,</span>
-<span id="cb10-20"><a href=""></a>          <span class="at">colkey=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb11-2"><a href=""></a><span class="fu">library</span>(plot3D)</span>
+<span id="cb11-3"><a href=""></a><span class="fu">data</span>(wage1)</span>
+<span id="cb11-4"><a href=""></a>bw <span class="ot">&lt;-</span> <span class="fu">npudensbw</span>(<span class="sc">~</span>lwage<span class="sc">+</span><span class="fu">ordered</span>(numdep),<span class="at">data=</span>wage1)</span>
+<span id="cb11-5"><a href=""></a>numdep.seq <span class="ot">&lt;-</span> <span class="fu">with</span>(wage1,<span class="fu">sort</span>(<span class="fu">unique</span>(numdep)))</span>
+<span id="cb11-6"><a href=""></a>lwage.seq <span class="ot">&lt;-</span> <span class="fu">with</span>(wage1,<span class="fu">seq</span>(<span class="fu">min</span>(lwage),<span class="fu">max</span>(lwage),<span class="at">length=</span><span class="dv">50</span>))</span>
+<span id="cb11-7"><a href=""></a>wage1.eval <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">numdep=</span><span class="fu">ordered</span>(numdep.seq),<span class="at">lwage=</span>lwage.seq)</span>
+<span id="cb11-8"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">fitted</span>(<span class="fu">npudens</span>(<span class="at">bws=</span>bw,<span class="at">newdata=</span>wage1.eval))</span>
+<span id="cb11-9"><a href=""></a><span class="do">## Hack since scatter3D converts ordered 0-6 to numeric 1-7</span></span>
+<span id="cb11-10"><a href=""></a><span class="fu">scatter3D</span>(<span class="fu">as.numeric</span>(wage1.eval[,<span class="dv">1</span>])<span class="sc">-</span><span class="dv">1</span>,wage1.eval[,<span class="dv">2</span>],fhat,</span>
+<span id="cb11-11"><a href=""></a>          <span class="at">ylab=</span><span class="st">"Log-Wage"</span>,</span>
+<span id="cb11-12"><a href=""></a>          <span class="at">xlab=</span><span class="st">"Number of Dependants"</span>,</span>
+<span id="cb11-13"><a href=""></a>          <span class="at">zlab=</span><span class="st">"Joint Density"</span>,</span>
+<span id="cb11-14"><a href=""></a>          <span class="at">ticktype=</span><span class="st">"detailed"</span>,</span>
+<span id="cb11-15"><a href=""></a>          <span class="at">angle=</span><span class="dv">15</span>,</span>
+<span id="cb11-16"><a href=""></a>          <span class="at">box=</span><span class="cn">TRUE</span>,</span>
+<span id="cb11-17"><a href=""></a>          <span class="at">type=</span><span class="st">"h"</span>,</span>
+<span id="cb11-18"><a href=""></a>          <span class="at">grid=</span><span class="cn">TRUE</span>,</span>
+<span id="cb11-19"><a href=""></a>          <span class="at">col=</span><span class="st">"blue"</span>,</span>
+<span id="cb11-20"><a href=""></a>          <span class="at">colkey=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ul>
 </section>
@@ -1246,18 +1261,18 @@ y=\hat g(x)+\hat\epsilon
 <section id="simulated-data-illustration" class="slide level2 center">
 <h2>Simulated Data Illustration</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb11-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb11-3"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb11-4"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">runif</span>(n))</span>
-<span id="cb11-5"><a href=""></a>dgp <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x)</span>
-<span id="cb11-6"><a href=""></a>y <span class="ot">&lt;-</span> dgp <span class="sc">+</span> <span class="fu">rnorm</span>(n,<span class="at">sd=</span><span class="fl">0.25</span><span class="sc">*</span><span class="fu">sd</span>(dgp))</span>
-<span id="cb11-7"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(y<span class="sc">~</span>x)</span>
-<span id="cb11-8"><a href=""></a><span class="fu">plot</span>(x,y,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">col=</span><span class="st">"grey"</span>,<span class="at">xlab=</span><span class="st">"X"</span>,<span class="at">ylab=</span><span class="st">"Y"</span>)</span>
-<span id="cb11-9"><a href=""></a><span class="fu">lines</span>(x,dgp)</span>
-<span id="cb11-10"><a href=""></a><span class="fu">lines</span>(x,<span class="fu">fitted</span>(ghat),<span class="at">col=</span><span class="dv">2</span>)</span>
-<span id="cb11-11"><a href=""></a><span class="fu">abline</span>(ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x),<span class="at">col=</span><span class="dv">3</span>)</span>
-<span id="cb11-12"><a href=""></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="fu">c</span>(<span class="st">"DGP"</span>,<span class="st">"Kernel"</span>,<span class="st">"OLS"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb12-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb12-3"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb12-4"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">runif</span>(n))</span>
+<span id="cb12-5"><a href=""></a>dgp <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x)</span>
+<span id="cb12-6"><a href=""></a>y <span class="ot">&lt;-</span> dgp <span class="sc">+</span> <span class="fu">rnorm</span>(n,<span class="at">sd=</span><span class="fl">0.25</span><span class="sc">*</span><span class="fu">sd</span>(dgp))</span>
+<span id="cb12-7"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(y<span class="sc">~</span>x)</span>
+<span id="cb12-8"><a href=""></a><span class="fu">plot</span>(x,y,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">col=</span><span class="st">"grey"</span>,<span class="at">xlab=</span><span class="st">"X"</span>,<span class="at">ylab=</span><span class="st">"Y"</span>)</span>
+<span id="cb12-9"><a href=""></a><span class="fu">lines</span>(x,dgp)</span>
+<span id="cb12-10"><a href=""></a><span class="fu">lines</span>(x,<span class="fu">fitted</span>(ghat),<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb12-11"><a href=""></a><span class="fu">abline</span>(ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x),<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb12-12"><a href=""></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="fu">c</span>(<span class="st">"DGP"</span>,<span class="st">"Kernel"</span>,<span class="st">"OLS"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/npregcos-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -1365,10 +1380,10 @@ y=\hat g(x)+\hat\epsilon
 <section id="example---simulated-marginal-effects" class="slide level2 center">
 <h2>Example - Simulated Marginal Effects</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">gradients=</span><span class="cn">TRUE</span>,<span class="at">neval=</span><span class="dv">250</span>)</span>
-<span id="cb12-2"><a href=""></a><span class="fu">lines</span>(x,<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x),<span class="at">col=</span><span class="dv">2</span>)</span>
-<span id="cb12-3"><a href=""></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">coef</span>(ghat.ols)[<span class="dv">2</span>],<span class="at">col=</span><span class="dv">3</span>)</span>
-<span id="cb12-4"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"Kernel ME"</span>,<span class="st">"DGP ME"</span>,<span class="st">"Linear ME"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">gradients=</span><span class="cn">TRUE</span>,<span class="at">neval=</span><span class="dv">250</span>)</span>
+<span id="cb13-2"><a href=""></a><span class="fu">lines</span>(x,<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x),<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb13-3"><a href=""></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">coef</span>(ghat.ols)[<span class="dv">2</span>],<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb13-4"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"Kernel ME"</span>,<span class="st">"DGP ME"</span>,<span class="st">"Linear ME"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/cosgradient-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -1404,44 +1419,44 @@ y=\hat g(x)+\hat\epsilon
 <section id="multivariate-nonparametric-regression" class="slide level2 smaller center">
 <h2>Multivariate Nonparametric Regression</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb13-2"><a href=""></a><span class="fu">data</span>(wage1)</span>
-<span id="cb13-3"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(lwage <span class="sc">~</span> female <span class="sc">+</span> married <span class="sc">+</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data=</span>wage1, <span class="at">regtype=</span><span class="st">"ll"</span>)</span>
-<span id="cb13-4"><a href=""></a><span class="fu">summary</span>(ghat)</span>
-<span id="cb13-5"><a href=""></a><span class="do">## </span></span>
-<span id="cb13-6"><a href=""></a><span class="do">## Regression Data: 526 training points, in 5 variable(s)</span></span>
-<span id="cb13-7"><a href=""></a><span class="do">##                     female   married     educ    exper   tenure</span></span>
-<span id="cb13-8"><a href=""></a><span class="do">## Bandwidth(s): 1.058363e-07 0.2881137 5.148991 7.185339 28.00628</span></span>
-<span id="cb13-9"><a href=""></a><span class="do">## </span></span>
-<span id="cb13-10"><a href=""></a><span class="do">## Kernel Regression Estimator: Local-Linear</span></span>
-<span id="cb13-11"><a href=""></a><span class="do">## Bandwidth Type: Fixed</span></span>
-<span id="cb13-12"><a href=""></a><span class="do">## Residual standard error: 0.36823</span></span>
-<span id="cb13-13"><a href=""></a><span class="do">## R-squared: 0.520417</span></span>
-<span id="cb13-14"><a href=""></a><span class="do">## </span></span>
-<span id="cb13-15"><a href=""></a><span class="do">## Continuous Kernel Type: Second-Order Gaussian</span></span>
-<span id="cb13-16"><a href=""></a><span class="do">## No. Continuous Explanatory Vars.: 3</span></span>
-<span id="cb13-17"><a href=""></a><span class="do">## </span></span>
-<span id="cb13-18"><a href=""></a><span class="do">## Unordered Categorical Kernel Type: Aitchison and Aitken</span></span>
-<span id="cb13-19"><a href=""></a><span class="do">## No. Unordered Categorical Explanatory Vars.: 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb14-2"><a href=""></a><span class="fu">data</span>(wage1)</span>
+<span id="cb14-3"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(lwage <span class="sc">~</span> female <span class="sc">+</span> married <span class="sc">+</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data=</span>wage1, <span class="at">regtype=</span><span class="st">"ll"</span>)</span>
+<span id="cb14-4"><a href=""></a><span class="fu">summary</span>(ghat)</span>
+<span id="cb14-5"><a href=""></a><span class="do">## </span></span>
+<span id="cb14-6"><a href=""></a><span class="do">## Regression Data: 526 training points, in 5 variable(s)</span></span>
+<span id="cb14-7"><a href=""></a><span class="do">##                     female   married     educ    exper   tenure</span></span>
+<span id="cb14-8"><a href=""></a><span class="do">## Bandwidth(s): 1.058363e-07 0.2881137 5.148991 7.185339 28.00628</span></span>
+<span id="cb14-9"><a href=""></a><span class="do">## </span></span>
+<span id="cb14-10"><a href=""></a><span class="do">## Kernel Regression Estimator: Local-Linear</span></span>
+<span id="cb14-11"><a href=""></a><span class="do">## Bandwidth Type: Fixed</span></span>
+<span id="cb14-12"><a href=""></a><span class="do">## Residual standard error: 0.36823</span></span>
+<span id="cb14-13"><a href=""></a><span class="do">## R-squared: 0.520417</span></span>
+<span id="cb14-14"><a href=""></a><span class="do">## </span></span>
+<span id="cb14-15"><a href=""></a><span class="do">## Continuous Kernel Type: Second-Order Gaussian</span></span>
+<span id="cb14-16"><a href=""></a><span class="do">## No. Continuous Explanatory Vars.: 3</span></span>
+<span id="cb14-17"><a href=""></a><span class="do">## </span></span>
+<span id="cb14-18"><a href=""></a><span class="do">## Unordered Categorical Kernel Type: Aitchison and Aitken</span></span>
+<span id="cb14-19"><a href=""></a><span class="do">## No. Unordered Categorical Explanatory Vars.: 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="partial-regression-plots" class="slide level2 smaller center">
 <h2>Partial Regression Plots</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="do">## We run out of graph axis dimensions with &gt; 2 predictors, so it is common to</span></span>
-<span id="cb14-2"><a href=""></a><span class="do">## construct partial plots that plot the fitted model versus each predictor</span></span>
-<span id="cb14-3"><a href=""></a><span class="do">## separately holding the off-axis predictors at, say, their median value (you</span></span>
-<span id="cb14-4"><a href=""></a><span class="do">## can change this - see ?npplot and the argument xq)</span></span>
-<span id="cb14-5"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb14-6"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="do">## We run out of graph axis dimensions with &gt; 2 predictors, so it is common to</span></span>
+<span id="cb15-2"><a href=""></a><span class="do">## construct partial plots that plot the fitted model versus each predictor</span></span>
+<span id="cb15-3"><a href=""></a><span class="do">## separately holding the off-axis predictors at, say, their median value (you</span></span>
+<span id="cb15-4"><a href=""></a><span class="do">## can change this - see ?npplot and the argument xq)</span></span>
+<span id="cb15-5"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb15-6"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/wage1plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="marginal-effects-gradient-plots" class="slide level2 smaller center">
 <h2>Marginal Effects (Gradient) Plots</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb15-2"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">gradients=</span><span class="cn">TRUE</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb16-2"><a href=""></a><span class="fu">plot</span>(ghat,<span class="at">gradients=</span><span class="cn">TRUE</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="index_files/figure-revealjs/wage1gradientplot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -1449,31 +1464,31 @@ y=\hat g(x)+\hat\epsilon
 <h2>Testing <span class="math inline">\(H_0\colon\beta_j=0\)</span> (OLS Significance)</h2>
 <p>A simple <span class="math inline">\(t\)</span>-test is used to test <span class="math inline">\(H_0\colon \beta_j=0\)</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(lwage <span class="sc">~</span> female <span class="sc">+</span> married <span class="sc">+</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data=</span>wage1)</span>
-<span id="cb16-2"><a href=""></a><span class="fu">summary</span>(ghat.ols)</span>
-<span id="cb16-3"><a href=""></a><span class="do">## </span></span>
-<span id="cb16-4"><a href=""></a><span class="do">## Call:</span></span>
-<span id="cb16-5"><a href=""></a><span class="do">## lm(formula = lwage ~ female + married + educ + exper + tenure, </span></span>
-<span id="cb16-6"><a href=""></a><span class="do">##     data = wage1)</span></span>
-<span id="cb16-7"><a href=""></a><span class="do">## </span></span>
-<span id="cb16-8"><a href=""></a><span class="do">## Residuals:</span></span>
-<span id="cb16-9"><a href=""></a><span class="do">##      Min       1Q   Median       3Q      Max </span></span>
-<span id="cb16-10"><a href=""></a><span class="do">## -1.87254 -0.27256 -0.03779  0.25349  1.23666 </span></span>
-<span id="cb16-11"><a href=""></a><span class="do">## </span></span>
-<span id="cb16-12"><a href=""></a><span class="do">## Coefficients:</span></span>
-<span id="cb16-13"><a href=""></a><span class="do">##                    Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb16-14"><a href=""></a><span class="do">## (Intercept)        0.330268   0.106391   3.104  0.00201 ** </span></span>
-<span id="cb16-15"><a href=""></a><span class="do">## femaleMale         0.285530   0.037264   7.662 9.00e-14 ***</span></span>
-<span id="cb16-16"><a href=""></a><span class="do">## marriedNotmarried -0.125739   0.039986  -3.145  0.00176 ** </span></span>
-<span id="cb16-17"><a href=""></a><span class="do">## educ               0.083905   0.006973  12.033  &lt; 2e-16 ***</span></span>
-<span id="cb16-18"><a href=""></a><span class="do">## exper              0.003134   0.001682   1.863  0.06300 .  </span></span>
-<span id="cb16-19"><a href=""></a><span class="do">## tenure             0.016867   0.002955   5.707 1.93e-08 ***</span></span>
-<span id="cb16-20"><a href=""></a><span class="do">## ---</span></span>
-<span id="cb16-21"><a href=""></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span id="cb16-22"><a href=""></a><span class="do">## </span></span>
-<span id="cb16-23"><a href=""></a><span class="do">## Residual standard error: 0.4125 on 520 degrees of freedom</span></span>
-<span id="cb16-24"><a href=""></a><span class="do">## Multiple R-squared:  0.4036, Adjusted R-squared:  0.3979 </span></span>
-<span id="cb16-25"><a href=""></a><span class="do">## F-statistic: 70.38 on 5 and 520 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(lwage <span class="sc">~</span> female <span class="sc">+</span> married <span class="sc">+</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data=</span>wage1)</span>
+<span id="cb17-2"><a href=""></a><span class="fu">summary</span>(ghat.ols)</span>
+<span id="cb17-3"><a href=""></a><span class="do">## </span></span>
+<span id="cb17-4"><a href=""></a><span class="do">## Call:</span></span>
+<span id="cb17-5"><a href=""></a><span class="do">## lm(formula = lwage ~ female + married + educ + exper + tenure, </span></span>
+<span id="cb17-6"><a href=""></a><span class="do">##     data = wage1)</span></span>
+<span id="cb17-7"><a href=""></a><span class="do">## </span></span>
+<span id="cb17-8"><a href=""></a><span class="do">## Residuals:</span></span>
+<span id="cb17-9"><a href=""></a><span class="do">##      Min       1Q   Median       3Q      Max </span></span>
+<span id="cb17-10"><a href=""></a><span class="do">## -1.87254 -0.27256 -0.03779  0.25349  1.23666 </span></span>
+<span id="cb17-11"><a href=""></a><span class="do">## </span></span>
+<span id="cb17-12"><a href=""></a><span class="do">## Coefficients:</span></span>
+<span id="cb17-13"><a href=""></a><span class="do">##                    Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb17-14"><a href=""></a><span class="do">## (Intercept)        0.330268   0.106391   3.104  0.00201 ** </span></span>
+<span id="cb17-15"><a href=""></a><span class="do">## femaleMale         0.285530   0.037264   7.662 9.00e-14 ***</span></span>
+<span id="cb17-16"><a href=""></a><span class="do">## marriedNotmarried -0.125739   0.039986  -3.145  0.00176 ** </span></span>
+<span id="cb17-17"><a href=""></a><span class="do">## educ               0.083905   0.006973  12.033  &lt; 2e-16 ***</span></span>
+<span id="cb17-18"><a href=""></a><span class="do">## exper              0.003134   0.001682   1.863  0.06300 .  </span></span>
+<span id="cb17-19"><a href=""></a><span class="do">## tenure             0.016867   0.002955   5.707 1.93e-08 ***</span></span>
+<span id="cb17-20"><a href=""></a><span class="do">## ---</span></span>
+<span id="cb17-21"><a href=""></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb17-22"><a href=""></a><span class="do">## </span></span>
+<span id="cb17-23"><a href=""></a><span class="do">## Residual standard error: 0.4125 on 520 degrees of freedom</span></span>
+<span id="cb17-24"><a href=""></a><span class="do">## Multiple R-squared:  0.4036, Adjusted R-squared:  0.3979 </span></span>
+<span id="cb17-25"><a href=""></a><span class="do">## F-statistic: 70.38 on 5 and 520 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="testing-h_0colonbeta_jx0-significance" class="slide level2 center">
@@ -1499,25 +1514,25 @@ with + measure}
 <h2>Testing <span class="math inline">\(H_0\colon\beta_j(x)=0\)</span> (Significance)</h2>
 <p>A bootstrap <span class="math inline">\(\lambda\)</span>-test is used to test <span class="math inline">\(H_0\colon \beta_j(x)=0\,\forall\, x\)</span> (a.e.)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">npsigtest</span>(ghat)</span>
-<span id="cb17-2"><a href=""></a><span class="do">## </span></span>
-<span id="cb17-3"><a href=""></a><span class="do">## Kernel Regression Significance Test</span></span>
-<span id="cb17-4"><a href=""></a><span class="do">## Type I Test with IID Bootstrap (399 replications, Pivot = TRUE, joint = FALSE)</span></span>
-<span id="cb17-5"><a href=""></a><span class="do">## Explanatory variables tested for significance:</span></span>
-<span id="cb17-6"><a href=""></a><span class="do">## female (1), married (2), educ (3), exper (4), tenure (5)</span></span>
-<span id="cb17-7"><a href=""></a><span class="do">## </span></span>
-<span id="cb17-8"><a href=""></a><span class="do">##                     female   married     educ    exper   tenure</span></span>
-<span id="cb17-9"><a href=""></a><span class="do">## Bandwidth(s): 1.058363e-07 0.2881137 5.148991 7.185339 28.00628</span></span>
-<span id="cb17-10"><a href=""></a><span class="do">## </span></span>
-<span id="cb17-11"><a href=""></a><span class="do">## Individual Significance Tests</span></span>
-<span id="cb17-12"><a href=""></a><span class="do">## P Value: </span></span>
-<span id="cb17-13"><a href=""></a><span class="do">## female  &lt; 2.22e-16 *** </span></span>
-<span id="cb17-14"><a href=""></a><span class="do">## married 0.0050125 ** </span></span>
-<span id="cb17-15"><a href=""></a><span class="do">## educ    &lt; 2.22e-16 *** </span></span>
-<span id="cb17-16"><a href=""></a><span class="do">## exper   &lt; 2.22e-16 *** </span></span>
-<span id="cb17-17"><a href=""></a><span class="do">## tenure  &lt; 2.22e-16 ***</span></span>
-<span id="cb17-18"><a href=""></a><span class="do">## ---</span></span>
-<span id="cb17-19"><a href=""></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">npsigtest</span>(ghat)</span>
+<span id="cb18-2"><a href=""></a><span class="do">## </span></span>
+<span id="cb18-3"><a href=""></a><span class="do">## Kernel Regression Significance Test</span></span>
+<span id="cb18-4"><a href=""></a><span class="do">## Type I Test with IID Bootstrap (399 replications, Pivot = TRUE, joint = FALSE)</span></span>
+<span id="cb18-5"><a href=""></a><span class="do">## Explanatory variables tested for significance:</span></span>
+<span id="cb18-6"><a href=""></a><span class="do">## female (1), married (2), educ (3), exper (4), tenure (5)</span></span>
+<span id="cb18-7"><a href=""></a><span class="do">## </span></span>
+<span id="cb18-8"><a href=""></a><span class="do">##                     female   married     educ    exper   tenure</span></span>
+<span id="cb18-9"><a href=""></a><span class="do">## Bandwidth(s): 1.058363e-07 0.2881137 5.148991 7.185339 28.00628</span></span>
+<span id="cb18-10"><a href=""></a><span class="do">## </span></span>
+<span id="cb18-11"><a href=""></a><span class="do">## Individual Significance Tests</span></span>
+<span id="cb18-12"><a href=""></a><span class="do">## P Value: </span></span>
+<span id="cb18-13"><a href=""></a><span class="do">## female  &lt; 2.22e-16 *** </span></span>
+<span id="cb18-14"><a href=""></a><span class="do">## married 0.0050125 ** </span></span>
+<span id="cb18-15"><a href=""></a><span class="do">## educ    &lt; 2.22e-16 *** </span></span>
+<span id="cb18-16"><a href=""></a><span class="do">## exper   &lt; 2.22e-16 *** </span></span>
+<span id="cb18-17"><a href=""></a><span class="do">## tenure  &lt; 2.22e-16 ***</span></span>
+<span id="cb18-18"><a href=""></a><span class="do">## ---</span></span>
+<span id="cb18-19"><a href=""></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="counterfactuals" class="slide level2 center">
@@ -1532,23 +1547,23 @@ with + measure}
 <section id="counterfactuals-1" class="slide level2 center">
 <h2>Counterfactuals</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">attach</span>(wage1)</span>
-<span id="cb18-2"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">female =</span> <span class="fu">factor</span>(<span class="st">"Male"</span>, <span class="at">levels=</span><span class="fu">levels</span>(female)),</span>
-<span id="cb18-3"><a href=""></a>                 <span class="at">married =</span> <span class="fu">factor</span>(<span class="st">"Notmarried"</span>, <span class="at">levels=</span><span class="fu">levels</span>(married)),</span>
-<span id="cb18-4"><a href=""></a>                 <span class="at">educ =</span> <span class="fu">median</span>(educ),</span>
-<span id="cb18-5"><a href=""></a>                 <span class="at">tenure =</span> <span class="fu">median</span>(tenure),</span>
-<span id="cb18-6"><a href=""></a>                 <span class="at">exper =</span> <span class="fu">median</span>(exper))</span>
-<span id="cb18-7"><a href=""></a><span class="fu">head</span>(df)</span>
-<span id="cb18-8"><a href=""></a><span class="do">##   female    married educ tenure exper</span></span>
-<span id="cb18-9"><a href=""></a><span class="do">## 1   Male Notmarried   12      2  13.5</span></span>
-<span id="cb18-10"><a href=""></a><span class="fu">predict</span>(ghat, <span class="at">newdata=</span>df)</span>
-<span id="cb18-11"><a href=""></a><span class="do">## [1] 1.699066</span></span>
-<span id="cb18-12"><a href=""></a><span class="do">## Or you could use ghat &lt;- npreg(...,newdata=df) and fitted(ghat) </span></span>
-<span id="cb18-13"><a href=""></a><span class="do">## ghat &lt;- npreg(lwage ~ female + married + educ + exper + tenure, </span></span>
-<span id="cb18-14"><a href=""></a><span class="do">##               data=wage1,</span></span>
-<span id="cb18-15"><a href=""></a><span class="do">##               regtype="ll", </span></span>
-<span id="cb18-16"><a href=""></a><span class="do">##               newdata=df)</span></span>
-<span id="cb18-17"><a href=""></a><span class="do">## fitted(ghat)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">attach</span>(wage1)</span>
+<span id="cb19-2"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">female =</span> <span class="fu">factor</span>(<span class="st">"Male"</span>, <span class="at">levels=</span><span class="fu">levels</span>(female)),</span>
+<span id="cb19-3"><a href=""></a>                 <span class="at">married =</span> <span class="fu">factor</span>(<span class="st">"Notmarried"</span>, <span class="at">levels=</span><span class="fu">levels</span>(married)),</span>
+<span id="cb19-4"><a href=""></a>                 <span class="at">educ =</span> <span class="fu">median</span>(educ),</span>
+<span id="cb19-5"><a href=""></a>                 <span class="at">tenure =</span> <span class="fu">median</span>(tenure),</span>
+<span id="cb19-6"><a href=""></a>                 <span class="at">exper =</span> <span class="fu">median</span>(exper))</span>
+<span id="cb19-7"><a href=""></a><span class="fu">head</span>(df)</span>
+<span id="cb19-8"><a href=""></a><span class="do">##   female    married educ tenure exper</span></span>
+<span id="cb19-9"><a href=""></a><span class="do">## 1   Male Notmarried   12      2  13.5</span></span>
+<span id="cb19-10"><a href=""></a><span class="fu">predict</span>(ghat, <span class="at">newdata=</span>df)</span>
+<span id="cb19-11"><a href=""></a><span class="do">## [1] 1.699066</span></span>
+<span id="cb19-12"><a href=""></a><span class="do">## Or you could use ghat &lt;- npreg(...,newdata=df) and fitted(ghat) </span></span>
+<span id="cb19-13"><a href=""></a><span class="do">## ghat &lt;- npreg(lwage ~ female + married + educ + exper + tenure, </span></span>
+<span id="cb19-14"><a href=""></a><span class="do">##               data=wage1,</span></span>
+<span id="cb19-15"><a href=""></a><span class="do">##               regtype="ll", </span></span>
+<span id="cb19-16"><a href=""></a><span class="do">##               newdata=df)</span></span>
+<span id="cb19-17"><a href=""></a><span class="do">## fitted(ghat)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If <code>df</code> had multiple rows we would get a prediction for each row (i.e., a vector of predictions)</p>
 </section></section>

@@ -152,13 +152,15 @@ Encourage participants to print/save a PDF copy of the slides as there is no gua
 
 - These correspond to data that are *numbers*, *unordered categories*, and *ordered categories*, respectively
 
-- Pay careful attention to the following example
+- Pay careful attention to the following example of how we *cast* our data in R *prior* to analyzing it
+
+## RStudio R Editor Interface
+  
+![](images/rstudio_rcode.png)
 
 ## R and Data Types {.smaller}
 
-- Below is an example of how we *cast* our data in R *prior* to analyzing it
-
-- Copy and paste this into a new R file in RStudio, then run it line-by-line
+- Copy and paste this (right-click on the clipboard icon in the upper right of the code box) into a new R file in RStudio (in RStudio select the menu `"File"` -> `"New File"` -> `"R Script"` which will open in the upper left pane by default), and next execute it line-by-line (in RStudio position your cursor on the first line of the R code and then right-click on the `"Run"` icon)
 
   ```{r datatype}
   #| echo: true
@@ -178,7 +180,7 @@ Encourage participants to print/save a PDF copy of the slides as there is no gua
   ## income is categorical and ordered, but we need to ensure intended order (it
   ## will assume alphabetical ordering otherwise). Suppose you ignore it - let's
   ## see what happens when we just cast as type ordered() using defaults
-  income <- ordered(income)
+  income <- ordered(income);income
   ## The levels are in alphabetical order, which we don't want
   levels(income)
   ## We shall reorder the ordered factor levels as intended using levels=...
@@ -196,10 +198,6 @@ Encourage participants to print/save a PDF copy of the slides as there is no gua
 Pull up RStudio and patiently explain the interface then run the example - don't waste time but realize this could be their first exposure to R/RStudio.
 :::
 
-## RStudio R Editor Interface
-  
-![](images/rstudio_rcode.png)
-
 # Background <br> Density Estimation
 
 ## Parametric or Nonparametric? {.smaller}
@@ -216,6 +214,8 @@ n <- 1000
 x <- rnorm(n)
 ## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")
 x <- sort(x)
+## Conduct a test of normality
+shapiro.test(x)
 ## Since we simulated the data, let's plot the true, known, parametric density
 ## (we can't do this with actual data because the density of such data is, in
 ## general, unknown)
@@ -230,17 +230,26 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
   pander::pander(shapiro.test(x))
   ```
 
-- This is *simulated normal* data, and we fail to reject the null
+- This is *simulated normal* data and we *do not* reject the null that the data are normally distributed
 
   ::: callout-warning
-  What if we got the null density wrong (i.e., what if we rejected the null)?
+  What if the null was wrong (i.e., what if we rejected the null and it was not a Type I error)?
   :::
 
 ## Parametric or Nonparametric?
 
 - Now let's test normality for actual data, `eruptions`
 
+  ```{r shapiroeruptionscode}
+  #| echo: true
+  #| eval: false
+  data(faithful)
+  ?faithful
+  with(faithful,shapiro.test(eruptions))
+  ```
+  
   ```{r shapiroeruptions}
+  #| echo: false
   data(faithful)
   with(faithful,pander::pander(shapiro.test(eruptions)))
   ```
@@ -262,27 +271,29 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 
 ## Parametric or Nonparametric?
 
-- Below is a nonparametric density estimate and data *rug* for the `eruptions` data (it is bi-modal *and* asymmetric)
+- Below is a nonparametric density estimate estimate using base R's `density()` function and a data *rug* for the `eruptions` data (it is bi-modal *and* asymmetric)
 
   ```{r densityeruptions}
   #| echo: true
   #| output-location: slide
   data(faithful)
+  ?density
   plot(density(faithful$eruptions),main="")
   rug(faithful$eruptions)
   ```
 
 ## Parametric or Nonparametric?
 
-- Below is a nonparametric and *normal* parametric estimate (recall the normal parametric model has been *rejected*)
+- Below is a nonparametric estimate using base R's `density()` function and a *normal* parametric estimate using base R's `dnorm()` function (recall the normal parametric model has been *rejected* here)
 
   ```{r densityeruptionscomp}
   #| echo: true
   #| output-location: slide
   data(faithful)
+  eruptions.eval <- density(faithful$eruptions)$x
   plot(density(faithful$eruptions),main="")
-  with(faithful,lines(density(eruptions)$x,
-                dnorm(density(eruptions)$x,
+  with(faithful,lines(eruptions.eval,
+                dnorm(eruptions.eval,
                 mean=mean(eruptions),
                 sd=sd(eruptions)),
                 col=2,
@@ -323,20 +334,22 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 
 ## Non-Smooth or Smooth?
 
-- Below are non-smooth and smooth nonparametric density estimates for the *numeric* variable `eruptions`
+- Below are non-smooth and smooth nonparametric density estimates for the *numeric* variable `eruptions` (here we use `hist()` and the np package's `npudens()` function, respectively)
 
   ```{r histdensityeruptions}
   #| echo: true
   #| output-location: slide
   library(np)
+  ?npudens
   data(faithful)
+  eruptions.eval <- density(faithful$eruptions)$x
   hist(faithful$eruptions,prob=TRUE,
        main="",
        xlab="Eruptions",
        breaks=20,
        xlim=c(1.25,5.5))
-  with(faithful,lines(density(eruptions)$x,
-       fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
+  with(faithful,lines(eruptions.eval,
+       fitted(npudens(tdat=eruptions,edat=eruptions.eval))))
   rug(faithful$eruptions)
   ```
 
