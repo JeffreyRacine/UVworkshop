@@ -209,6 +209,7 @@ Suppose we need to estimate the density $f(x)$ of some numeric random variable $
 ```{r  parnpeval}
 #| eval: true
 #| echo: true
+#| output-location: slide
 ## Let's simulate a random numeric sample from the normal distribution
 set.seed(42)
 n <- 1000
@@ -383,13 +384,17 @@ In the keynote talk I will talk about how we might be able to *avoid* making any
 
 ## Smooth Univariate Density Estimation
 
-```{r npudenseruptions}
-#| echo: true
-library(np)
-data(faithful)
-fhat <- npudens(~eruptions,data=faithful)
-plot(fhat,neval=250,plot.errors.method="bootstrap")
-```
+-   We call `npudens()` with option `bwmethod="cv.ls"`
+
+    ```{r npudenseruptions}
+    #| echo: true
+    #| output-location: slide
+    library(np)
+    data(faithful)
+    fhat <- npudens(~eruptions,bwmethod="cv.ls",data=faithful)
+    summary(fhat$bws)
+    plot(fhat,neval=250,plot.errors.method="bootstrap")
+    ```
 
 ## Smooth Joint Density Estimation
 
@@ -414,13 +419,18 @@ plot(fhat,neval=250,plot.errors.method="bootstrap")
 
 ## Smooth Joint Density Estimation
 
-```{r npudenseruptionswaiting}
-#| echo: true
-library(np)
-data(faithful)
-fhat <- npudens(~eruptions+waiting,data=faithful)
-plot(fhat,theta=330,xtrim=-0.05,neval=75,view="fixed",main="")
-```
+-   Note we again use the function `npudens()` with the formula interface, but the formula now lists all variables separated by a `+` sign
+
+-   Note since we do not specify the argument `bwmethod=` it uses the default (`bwmethod=cv.ml`, i.e., likelihood cross-validation)
+
+    ```{r npudenseruptionswaiting}
+    #| echo: true
+    #| output-location: slide
+    library(np)
+    data(faithful)
+    fhat <- npudens(~eruptions+waiting,data=faithful)
+    plot(fhat,theta=330,xtrim=-0.05,neval=75,view="fixed",main="")
+    ```
 
 # Nonparametric Essentials <br> Categorical Data
 

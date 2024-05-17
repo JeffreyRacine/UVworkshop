@@ -602,10 +602,18 @@ Jeffrey S. Racine
 <span id="cb2-8"><a href=""></a><span class="do">## (we can't do this with actual data because the density of such data is, in</span></span>
 <span id="cb2-9"><a href=""></a><span class="do">## general, unknown)</span></span>
 <span id="cb2-10"><a href=""></a><span class="fu">plot</span>(x,<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="fu">mean</span>(x),<span class="at">sd=</span><span class="fu">sd</span>(x)),<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"Parametric Density Estimate"</span>,<span class="at">xlab=</span><span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
 </div>
-<img data-src="index_files/figure-revealjs/parnpeval-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="parametric-or-nonparametric-1" class="slide level2 center">
+
+</section>
+<section id="parametric-or-nonparametric-output" class="slide level2 smaller output-location-slide center"><h2>Parametric or Nonparametric?</h2><div class="cell output-location-slide" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/parnpeval-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="parametric-or-nonparametric-1" class="slide level2 center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
 <li class="fragment"><p>The R function <code>shapiro.test(x)</code> tests for normality</p>
@@ -865,15 +873,40 @@ f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x)
 </section>
 <section id="smooth-univariate-density-estimation-2" class="slide level2 center">
 <h2>Smooth Univariate Density Estimation</h2>
+<ul>
+<li class="fragment"><p>We call <code>npudens()</code> with option <code>bwmethod="cv.ls"</code></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(np)</span>
 <span id="cb6-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
-<span id="cb6-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions,<span class="at">data=</span>faithful)</span>
-<span id="cb6-4"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">neval=</span><span class="dv">250</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+<span id="cb6-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions,<span class="at">bwmethod=</span><span class="st">"cv.ls"</span>,<span class="at">data=</span>faithful)</span>
+<span id="cb6-4"><a href=""></a><span class="fu">summary</span>(fhat<span class="sc">$</span>bws)</span>
+<span id="cb6-5"><a href=""></a><span class="do">## </span></span>
+<span id="cb6-6"><a href=""></a><span class="do">## Data (272 observations, 1 variable(s)):</span></span>
+<span id="cb6-7"><a href=""></a><span class="do">## </span></span>
+<span id="cb6-8"><a href=""></a><span class="do">## Bandwidth Selection Method: Least Squares Cross-Validation</span></span>
+<span id="cb6-9"><a href=""></a><span class="do">## Formula: ~eruptions</span></span>
+<span id="cb6-10"><a href=""></a><span class="do">## Bandwidth Type: Fixed</span></span>
+<span id="cb6-11"><a href=""></a><span class="do">## Objective Function Value: 0.4284678 (achieved on multistart 1)</span></span>
+<span id="cb6-12"><a href=""></a><span class="do">## </span></span>
+<span id="cb6-13"><a href=""></a><span class="do">## Var. Name: eruptions Bandwidth: 0.1026276 Scale Factor: 0.3310986</span></span>
+<span id="cb6-14"><a href=""></a><span class="do">## </span></span>
+<span id="cb6-15"><a href=""></a><span class="do">## Continuous Kernel Type: Second-Order Gaussian</span></span>
+<span id="cb6-16"><a href=""></a><span class="do">## No. Continuous Vars.: 1</span></span>
+<span id="cb6-17"><a href=""></a><span class="do">## Estimation Time: 0.09 seconds</span></span>
+<span id="cb6-18"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">neval=</span><span class="dv">250</span>,<span class="at">plot.errors.method=</span><span class="st">"bootstrap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<img data-src="index_files/figure-revealjs/npudenseruptions-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="smooth-joint-density-estimation" class="slide level2 center">
+</li>
+</ul>
+</section>
+<section id="smooth-univariate-density-estimation-2-output" class="slide level2 output-location-slide center"><h2>Smooth Univariate Density Estimation</h2><div class="cell output-location-slide" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/npudenseruptions-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="smooth-joint-density-estimation" class="slide level2 center">
 <h2>Smooth Joint Density Estimation</h2>
 <ul>
 <li class="fragment"><p>So far we have considered univariate densities (<span class="math inline">\(X\in\mathbb{R}^1\)</span>)</p></li>
@@ -894,14 +927,26 @@ f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x)
 </section>
 <section id="smooth-joint-density-estimation-2" class="slide level2 center">
 <h2>Smooth Joint Density Estimation</h2>
+<ul>
+<li class="fragment"><p>Note we again use the function <code>npudens()</code> with the formula interface, but the formula now lists all variables separated by a <code>+</code> sign</p></li>
+<li class="fragment"><p>Note since we do not specify the argument <code>bwmethod=</code> it uses the default (<code>bwmethod=cv.ml</code>, i.e., likelihood cross-validation)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">library</span>(np)</span>
 <span id="cb7-2"><a href=""></a><span class="fu">data</span>(faithful)</span>
 <span id="cb7-3"><a href=""></a>fhat <span class="ot">&lt;-</span> <span class="fu">npudens</span>(<span class="sc">~</span>eruptions<span class="sc">+</span>waiting,<span class="at">data=</span>faithful)</span>
 <span id="cb7-4"><a href=""></a><span class="fu">plot</span>(fhat,<span class="at">theta=</span><span class="dv">330</span>,<span class="at">xtrim=</span><span class="sc">-</span><span class="fl">0.05</span>,<span class="at">neval=</span><span class="dv">75</span>,<span class="at">view=</span><span class="st">"fixed"</span>,<span class="at">main=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
 </div>
-<img data-src="index_files/figure-revealjs/npudenseruptionswaiting-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
+</li>
+</ul>
+</section><section id="smooth-joint-density-estimation-2-output" class="slide level2 output-location-slide center"><h2>Smooth Joint Density Estimation</h2><div class="cell output-location-slide" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/npudenseruptionswaiting-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div></section></section>
 <section>
 <section id="nonparametric-essentials-categorical-data" class="title-slide slide level1 center">
 <h1>Nonparametric Essentials <br> Categorical Data</h1>

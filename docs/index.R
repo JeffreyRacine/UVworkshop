@@ -38,6 +38,7 @@ library(np)
 ## ----parnpeval----------------------------------------------------------------
 #| eval: true
 #| echo: true
+#| output-location: slide
 ## Let's simulate a random numeric sample from the normal distribution
 set.seed(42)
 n <- 1000
@@ -103,14 +104,17 @@ rug(faithful$eruptions)
 
 ## ----npudenseruptions---------------------------------------------------------
 #| echo: true
+#| output-location: slide
 library(np)
 data(faithful)
-fhat <- npudens(~eruptions,data=faithful)
+fhat <- npudens(~eruptions,bwmethod="cv.ls",data=faithful)
+summary(fhat$bws)
 plot(fhat,neval=250,plot.errors.method="bootstrap")
 
 
 ## ----npudenseruptionswaiting--------------------------------------------------
 #| echo: true
+#| output-location: slide
 library(np)
 data(faithful)
 fhat <- npudens(~eruptions+waiting,data=faithful)
