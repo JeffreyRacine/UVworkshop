@@ -21,7 +21,7 @@ library(np)
 ## ## income is categorical and ordered, but we need to ensure intended order (it
 ## ## will assume alphabetical ordering otherwise). Suppose you ignore it - let's
 ## ## see what happens when we just cast as type ordered() using defaults
-## income <- ordered(income)
+## income <- ordered(income);income
 ## ## The levels are in alphabetical order, which we don't want
 ## levels(income)
 ## ## We shall reorder the ordered factor levels as intended using levels=...
@@ -45,6 +45,8 @@ n <- 1000
 x <- rnorm(n)
 ## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")
 x <- sort(x)
+## Conduct a test of normality
+shapiro.test(x)
 ## Since we simulated the data, let's plot the true, known, parametric density
 ## (we can't do this with actual data because the density of such data is, in
 ## general, unknown)
@@ -55,7 +57,16 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 pander::pander(shapiro.test(x))
 
 
+## ----shapiroeruptionscode-----------------------------------------------------
+#| echo: true
+#| eval: false
+## data(faithful)
+## ?faithful
+## with(faithful,shapiro.test(eruptions))
+
+
 ## ----shapiroeruptions---------------------------------------------------------
+#| echo: false
 data(faithful)
 with(faithful,pander::pander(shapiro.test(eruptions)))
 
@@ -64,6 +75,7 @@ with(faithful,pander::pander(shapiro.test(eruptions)))
 #| echo: true
 #| output-location: slide
 data(faithful)
+?density
 plot(density(faithful$eruptions),main="")
 rug(faithful$eruptions)
 
@@ -72,9 +84,10 @@ rug(faithful$eruptions)
 #| echo: true
 #| output-location: slide
 data(faithful)
+eruptions.eval <- density(faithful$eruptions)$x
 plot(density(faithful$eruptions),main="")
-with(faithful,lines(density(eruptions)$x,
-              dnorm(density(eruptions)$x,
+with(faithful,lines(eruptions.eval,
+              dnorm(eruptions.eval,
               mean=mean(eruptions),
               sd=sd(eruptions)),
               col=2,
@@ -91,14 +104,16 @@ legend("topleft",
 #| echo: true
 #| output-location: slide
 library(np)
+?npudens
 data(faithful)
+eruptions.eval <- density(faithful$eruptions)$x
 hist(faithful$eruptions,prob=TRUE,
      main="",
      xlab="Eruptions",
      breaks=20,
      xlim=c(1.25,5.5))
-with(faithful,lines(density(eruptions)$x,
-     fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
+with(faithful,lines(eruptions.eval,
+     fitted(npudens(tdat=eruptions,edat=eruptions.eval))))
 rug(faithful$eruptions)
 
 
