@@ -589,27 +589,30 @@ Jeffrey S. Racine
 </section>
 <section id="parametric-or-nonparametric" class="slide level2 smaller center">
 <h2>Parametric or Nonparametric?</h2>
-<p>Suppose we need to estimate the density <span class="math inline">\(f(x)\)</span> of some numeric random variable <span class="math inline">\(X\)</span></p>
+<ul>
+<li class="fragment"><p>Suppose we need to estimate the density <span class="math inline">\(f(x)\)</span> of some numeric random variable <span class="math inline">\(X\)</span>, and use the normal distribution as a model (in R we use the <code>dnorm(...,mean=...,sd=...)</code> function to represent the normal density)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="do">## Let's simulate a random numeric sample from the normal distribution</span></span>
-<span id="cb2-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb2-3"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb2-4"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb2-5"><a href=""></a><span class="do">## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")</span></span>
-<span id="cb2-6"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(x)</span>
-<span id="cb2-7"><a href=""></a><span class="do">## Conduct a test of normality</span></span>
-<span id="cb2-8"><a href=""></a><span class="fu">shapiro.test</span>(x)</span>
-<span id="cb2-9"><a href=""></a><span class="do">## </span></span>
-<span id="cb2-10"><a href=""></a><span class="do">##  Shapiro-Wilk normality test</span></span>
-<span id="cb2-11"><a href=""></a><span class="do">## </span></span>
-<span id="cb2-12"><a href=""></a><span class="do">## data:  x</span></span>
-<span id="cb2-13"><a href=""></a><span class="do">## W = 0.99882, p-value = 0.767</span></span>
-<span id="cb2-14"><a href=""></a><span class="do">## Since we simulated the data, let's plot the true, known, parametric density</span></span>
-<span id="cb2-15"><a href=""></a><span class="do">## (we can't do this with actual data because the density of such data is, in</span></span>
-<span id="cb2-16"><a href=""></a><span class="do">## general, unknown)</span></span>
-<span id="cb2-17"><a href=""></a><span class="fu">plot</span>(x,<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="fu">mean</span>(x),<span class="at">sd=</span><span class="fu">sd</span>(x)),<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"Parametric Density Estimate"</span>,<span class="at">xlab=</span><span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="do">## Let's simulate a random numeric sample that, in fact, is drawn from the</span></span>
+<span id="cb2-2"><a href=""></a><span class="do">## standard normal distribution, i.e., N(0,1)</span></span>
+<span id="cb2-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb2-5"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb2-6"><a href=""></a><span class="do">## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")</span></span>
+<span id="cb2-7"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(x)</span>
+<span id="cb2-8"><a href=""></a><span class="do">## Conduct a test of normality</span></span>
+<span id="cb2-9"><a href=""></a><span class="fu">shapiro.test</span>(x)</span>
+<span id="cb2-10"><a href=""></a><span class="do">## </span></span>
+<span id="cb2-11"><a href=""></a><span class="do">##  Shapiro-Wilk normality test</span></span>
+<span id="cb2-12"><a href=""></a><span class="do">## </span></span>
+<span id="cb2-13"><a href=""></a><span class="do">## data:  x</span></span>
+<span id="cb2-14"><a href=""></a><span class="do">## W = 0.99882, p-value = 0.767</span></span>
+<span id="cb2-15"><a href=""></a><span class="do">## Since we simulated the data, let's plot the true, known, parametric density</span></span>
+<span id="cb2-16"><a href=""></a><span class="do">## (we can't do this with actual data because the density of such data is, in</span></span>
+<span id="cb2-17"><a href=""></a><span class="do">## general, unknown)</span></span>
+<span id="cb2-18"><a href=""></a><span class="fu">plot</span>(x,<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="fu">mean</span>(x),<span class="at">sd=</span><span class="fu">sd</span>(x)),<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"Parametric Density Estimate"</span>,<span class="at">xlab=</span><span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
+</li>
+</ul>
 </section>
 <section id="parametric-or-nonparametric-output" class="slide level2 smaller output-location-slide center"><h2>Parametric or Nonparametric?</h2><div class="cell output-location-slide" data-layout-align="center">
 <div class="cell-output-display">
@@ -712,7 +715,7 @@ Jeffrey S. Racine
 <section id="parametric-or-nonparametric-3" class="slide level2 center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
-<li class="fragment"><p>Actual data (<span class="math inline">\(X_i\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>) is rarely drawn from the simple parametric distributions used in <em>sampling theory</em></p></li>
+<li class="fragment"><p>Actual data (denoted by <span class="math inline">\(X_i\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>) is rarely drawn from the simple parametric distributions used in <em>sampling theory</em></p></li>
 <li class="fragment"><p>Sampling theory describes <em>summary statistics</em>, e.g., <em>averages</em> of actual data, or <em>averages</em> of squared deviations, such as <span class="math display">\[\begin{align*}
 \hat\mu&amp;=\frac{1}{n}\sum_{i=1}^n X_i\quad\text{ or }\quad\hat\sigma^2=\frac{1}{n-1}\sum_{i=1}^n (X_i -\hat\mu)^2&amp;
 \end{align*}\]</span></p></li>
@@ -980,7 +983,7 @@ f_H(x)=\frac{1}{nh}\sum_{i=1}^n\mathbf{1}(X_i\text{ is in the same bin as }x)
 <ul>
 <li class="fragment"><p>Let <span class="math inline">\(X\in\mathcal{D}=\{0,1,\dots,c-1\}\)</span> be categorical</p></li>
 <li class="fragment"><p><span class="math inline">\(X\)</span> can be <em>unordered</em> (<code>factor()</code> in R) or <em>ordered</em> (<code>ordered()</code> in R)</p></li>
-<li class="fragment"><p>The nonparametric <em>frequency</em> estimator of <span class="math inline">\(p(x)\)</span> is <span class="math display">\[\begin{align*}
+<li class="fragment"><p>The nonparametric <em>frequency</em> estimator of <span class="math inline">\(p(x)\)</span> (i.e., <em>sample proportion</em>) is <span class="math display">\[\begin{align*}
 p_n(x)&amp;=\frac{\# X_i\text{ equal to }x}{n}\\
 &amp;=\frac{1}{n}\sum_{i=1}^n \mathbf{1}(X_i=x)
 \end{align*}\]</span></p></li>

@@ -202,25 +202,26 @@ Pull up RStudio and patiently explain the interface then run the example - don't
 
 ## Parametric or Nonparametric? {.smaller}
 
-Suppose we need to estimate the density $f(x)$ of some numeric random variable $X$
+-   Suppose we need to estimate the density $f(x)$ of some numeric random variable $X$, and use the normal distribution as a model (in R we use the `dnorm(...,mean=...,sd=...)` function to represent the normal density)
 
-```{r  parnpeval}
-#| eval: true
-#| echo: true
-#| output-location: slide
-## Let's simulate a random numeric sample from the normal distribution
-set.seed(42)
-n <- 1000
-x <- rnorm(n)
-## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")
-x <- sort(x)
-## Conduct a test of normality
-shapiro.test(x)
-## Since we simulated the data, let's plot the true, known, parametric density
-## (we can't do this with actual data because the density of such data is, in
-## general, unknown)
-plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate",xlab="X")
-```
+    ```{r  parnpeval}
+    #| eval: true
+    #| echo: true
+    #| output-location: slide
+    ## Let's simulate a random numeric sample that, in fact, is drawn from the
+    ## standard normal distribution, i.e., N(0,1)
+    set.seed(42)
+    n <- 1000
+    x <- rnorm(n)
+    ## Let's sort the data so we can graph x versus dnorm(x,...) using lines (type="l")
+    x <- sort(x)
+    ## Conduct a test of normality
+    shapiro.test(x)
+    ## Since we simulated the data, let's plot the true, known, parametric density
+    ## (we can't do this with actual data because the density of such data is, in
+    ## general, unknown)
+    plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate",xlab="X")
+    ```
 
 ## Parametric or Nonparametric?
 
@@ -260,7 +261,7 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 
 ## Parametric or Nonparametric?
 
-- Actual data ($X_i$, $i=1,\dots,n$) is rarely drawn from the simple parametric distributions used in *sampling theory*
+- Actual data (denoted by $X_i$, $i=1,\dots,n$) is rarely drawn from the simple parametric distributions used in *sampling theory*
 
 - Sampling theory describes *summary statistics*, e.g., *averages* of actual data, or *averages* of squared deviations, such as 
   \begin{align*}
@@ -461,7 +462,7 @@ In the keynote talk I will talk about how we might be able to *avoid* making any
 
 - $X$ can be *unordered* (`factor()` in R) or *ordered* (`ordered()` in R)
 
-- The  nonparametric *frequency* estimator of $p(x)$ is
+- The  nonparametric *frequency* estimator of $p(x)$ (i.e., *sample proportion*) is
 \begin{align*}
   p_n(x)&=\frac{\# X_i\text{ equal to }x}{n}\\
   &=\frac{1}{n}\sum_{i=1}^n \mathbf{1}(X_i=x)
