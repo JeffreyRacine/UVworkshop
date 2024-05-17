@@ -94,7 +94,7 @@ with(faithful,lines(eruptions.eval,
               lty=2))
 rug(faithful$eruptions)
 legend("topleft",
-       c("Nonparametric","Parametric"),
+       c("Nonparametric","Parametric (rejected by Shapiro test)"),
        lty=c(1,2),
        col=c(1,2),
        bty="n")

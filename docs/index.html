@@ -537,7 +537,7 @@ Jeffrey S. Racine
 <section id="r-and-data-types-1" class="slide level2 smaller center">
 <h2>R and Data Types</h2>
 <ul>
-<li class="fragment"><p>Copy and paste this (right-click on the clipboard icon in the upper right of the code box) into a new R file in RStudio (in RStudio select the menu <code>"File"</code> -&gt; <code>"New File"</code> -&gt; <code>"R Script"</code> which will open in the upper left pane by default), and next execute it line-by-line (in RStudio position your cursor on the first line of the R code and then right-click on the <code>"Run"</code> icon)</p>
+<li class="fragment"><p>Copy and paste this code into RStudio (to copy, right-click the clipboard icon in the upper right of the code; in RStudio choose menu <code>"File"</code> -&gt; <code>"New File"</code> -&gt; <code>"R Script"</code> which will open in the upper left pane by default, then paste), then execute the code line-by-line (position your cursor on the first line of the R code in RStudio then right-click on the <code>"Run"</code> icon)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="do">## Generate some data: sex (unordered categorical), income (ordered categorical),</span></span>
 <span id="cb1-2"><a href=""></a><span class="do">## and height (numeric)</span></span>
@@ -756,7 +756,7 @@ Jeffrey S. Racine
 <span id="cb5-9"><a href=""></a>              <span class="at">lty=</span><span class="dv">2</span>))</span>
 <span id="cb5-10"><a href=""></a><span class="fu">rug</span>(faithful<span class="sc">$</span>eruptions)</span>
 <span id="cb5-11"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
-<span id="cb5-12"><a href=""></a>       <span class="fu">c</span>(<span class="st">"Nonparametric"</span>,<span class="st">"Parametric"</span>),</span>
+<span id="cb5-12"><a href=""></a>       <span class="fu">c</span>(<span class="st">"Nonparametric"</span>,<span class="st">"Parametric (rejected by Shapiro test)"</span>),</span>
 <span id="cb5-13"><a href=""></a>       <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
 <span id="cb5-14"><a href=""></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
 <span id="cb5-15"><a href=""></a>       <span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -800,7 +800,7 @@ Jeffrey S. Racine
 <section id="non-smooth-or-smooth" class="slide level2 center">
 <h2>Non-Smooth or Smooth?</h2>
 <ul>
-<li class="fragment"><p>Below are non-smooth and smooth nonparametric density estimates for the <em>numeric</em> variable <code>eruptions</code> (here we use <code>hist()</code> and the np package’s <code>npudens()</code> function, respectively)</p>
+<li class="fragment"><p>Below are non-smooth and smooth nonparametric density estimates for the <em>numeric</em> variable <code>eruptions</code> (recall the normal parametric model was rejected by the data so we proceed with non-smooth and smooth nonparametric methods, and we use <code>hist()</code> and the np package’s <code>npudens()</code> function, respectively)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(np)</span>
 <span id="cb6-2"><a href=""></a>?npudens</span>
