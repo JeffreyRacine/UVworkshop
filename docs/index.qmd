@@ -165,6 +165,7 @@ Encourage participants to print/save a PDF copy of the slides as there is no gua
   #| eval: false
   ## Generate some data: sex (unordered categorical), income (ordered categorical),
   ## and height (numeric)
+  set.seed(42)
   n <- 100
   sex <- sample(c("Female","Male"),n,replace=TRUE,prob=c(.4,.6))
   income <- sample(c("Low","Middle","High"),n,replace=TRUE,prob=c(.3,.5,.2))
@@ -263,6 +264,9 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 - Below is a nonparametric density estimate and data *rug* for the `eruptions` data (it is bi-modal *and* asymmetric)
 
   ```{r densityeruptions}
+  #| echo: true
+  #| output-location: slide
+  data(faithful)
   plot(density(faithful$eruptions),main="")
   rug(faithful$eruptions)
   ```
@@ -272,10 +276,22 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 - Below is a nonparametric and *normal* parametric estimate (recall the normal parametric model has been *rejected*)
 
   ```{r densityeruptionscomp}
+  #| echo: true
+  #| output-location: slide
+  data(faithful)
   plot(density(faithful$eruptions),main="")
-  with(faithful,lines(density(eruptions)$x,dnorm(density(eruptions)$x,mean=mean(eruptions),sd=sd(eruptions)),col=2,lty=2))
+  with(faithful,lines(density(eruptions)$x,
+                dnorm(density(eruptions)$x,
+                mean=mean(eruptions),
+                sd=sd(eruptions)),
+                col=2,
+                lty=2))
   rug(faithful$eruptions)
-  legend("topleft",c("Nonparametric","Parametric"),lty=c(1,2),col=c(1,2),bty="n")
+  legend("topleft",
+         c("Nonparametric","Parametric"),
+         lty=c(1,2),
+         col=c(1,2),
+         bty="n")
   ```
 
 ## Parametric or Nonparametric?
@@ -309,8 +325,17 @@ plot(x,dnorm(x,mean=mean(x),sd=sd(x)),type="l",ylab="Parametric Density Estimate
 - Below are non-smooth and smooth nonparametric density estimates for the *numeric* variable `eruptions`
 
   ```{r histdensityeruptions}
-  hist(faithful$eruptions,prob=TRUE,main="",xlab="Eruptions",breaks=20,xlim=c(1.25,5.5))
-  with(faithful,lines(density(eruptions)$x,fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
+  #| echo: true
+  #| output-location: slide
+  library(np)
+  data(faithful)
+  hist(faithful$eruptions,prob=TRUE,
+       main="",
+       xlab="Eruptions",
+       breaks=20,
+       xlim=c(1.25,5.5))
+  with(faithful,lines(density(eruptions)$x,
+       fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
   rug(faithful$eruptions)
   ```
 

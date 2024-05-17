@@ -8,6 +8,7 @@ library(np)
 #| eval: false
 ## ## Generate some data: sex (unordered categorical), income (ordered categorical),
 ## ## and height (numeric)
+## set.seed(42)
 ## n <- 100
 ## sex <- sample(c("Female","Male"),n,replace=TRUE,prob=c(.4,.6))
 ## income <- sample(c("Low","Middle","High"),n,replace=TRUE,prob=c(.3,.5,.2))
@@ -59,20 +60,44 @@ with(faithful,pander::pander(shapiro.test(eruptions)))
 
 
 ## ----densityeruptions---------------------------------------------------------
+#| echo: true
+#| output-location: slide
+data(faithful)
 plot(density(faithful$eruptions),main="")
 rug(faithful$eruptions)
 
 
 ## ----densityeruptionscomp-----------------------------------------------------
+#| echo: true
+#| output-location: slide
+data(faithful)
 plot(density(faithful$eruptions),main="")
-with(faithful,lines(density(eruptions)$x,dnorm(density(eruptions)$x,mean=mean(eruptions),sd=sd(eruptions)),col=2,lty=2))
+with(faithful,lines(density(eruptions)$x,
+              dnorm(density(eruptions)$x,
+              mean=mean(eruptions),
+              sd=sd(eruptions)),
+              col=2,
+              lty=2))
 rug(faithful$eruptions)
-legend("topleft",c("Nonparametric","Parametric"),lty=c(1,2),col=c(1,2),bty="n")
+legend("topleft",
+       c("Nonparametric","Parametric"),
+       lty=c(1,2),
+       col=c(1,2),
+       bty="n")
 
 
 ## ----histdensityeruptions-----------------------------------------------------
-hist(faithful$eruptions,prob=TRUE,main="",xlab="Eruptions",breaks=20,xlim=c(1.25,5.5))
-with(faithful,lines(density(eruptions)$x,fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
+#| echo: true
+#| output-location: slide
+library(np)
+data(faithful)
+hist(faithful$eruptions,prob=TRUE,
+     main="",
+     xlab="Eruptions",
+     breaks=20,
+     xlim=c(1.25,5.5))
+with(faithful,lines(density(eruptions)$x,
+     fitted(npudens(tdat=eruptions,edat=density(eruptions)$x))))
 rug(faithful$eruptions)
 
 

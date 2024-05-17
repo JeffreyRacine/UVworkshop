@@ -1,11 +1,11 @@
 libraries	library
-datatype	c	class	factor	levels	ordered	rnorm	sample
+datatype	c	class	factor	levels	ordered	rnorm	sample	set.seed
 parnpeval	dnorm	mean	plot	rnorm	sd	set.seed	sort
 shapiro	::	shapiro.test	x
 shapiroeruptions	::	data	eruptions	faithful	shapiro.test	with
-densityeruptions	$	density	faithful	plot	rug
-densityeruptionscomp	$	c	density	dnorm	eruptions	faithful	legend	lines	mean	plot	rug	sd	with
-histdensityeruptions	$	c	density	eruptions	faithful	fitted	hist	lines	npudens	rug	with
+densityeruptions	$	data	density	faithful	plot	rug
+densityeruptionscomp	$	c	data	density	dnorm	eruptions	faithful	legend	lines	mean	plot	rug	sd	with
+histdensityeruptions	$	c	data	density	eruptions	faithful	fitted	hist	library	lines	npudens	rug	with
 npudenseruptions	~	data	faithful	library	npudens	plot
 npudenseruptionswaiting	~	data	faithful	library	npudens	plot
 npudensfactor	~	c	factor	npudens	plot	sample	set.seed
