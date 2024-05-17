@@ -39,7 +39,8 @@ library(np)
 #| eval: true
 #| echo: true
 #| output-location: slide
-## Let's simulate a random numeric sample from the normal distribution
+## Let's simulate a random numeric sample that, in fact, is drawn from the
+## standard normal distribution, i.e., N(0,1)
 set.seed(42)
 n <- 1000
 x <- rnorm(n)
