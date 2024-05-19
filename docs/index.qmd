@@ -202,7 +202,7 @@ Pull up RStudio and patiently explain the interface then run the example - don't
 
 ## Parametric or Nonparametric? {.smaller}
 
--   Suppose we need to estimate the density $f(x)$ of some numeric random variable $X$, and use the normal distribution as a model (in R we use the `dnorm(...,mean=...,sd=...)` function to represent the normal density)
+-   Suppose we need to estimate the density $f(x)$ of some numeric random variable $X$, and use the normal distribution as a model (in R we use the `dnorm(...,mean=...,sd=...)` function to represent the normal density, see `?dnorm` for details)
 
     ```{r  parnpeval}
     #| eval: true
@@ -261,14 +261,14 @@ Pull up RStudio and patiently explain the interface then run the example - don't
 
 ## Parametric or Nonparametric?
 
-- Actual data (denoted by $X_i$, $i=1,\dots,n$) is rarely drawn from the simple parametric distributions used in *sampling theory*
+- Actual data will be denoted by $X_i$, $i=1,\dots,n$, where $n$ is the sample size, is rarely drawn from the simple parametric distributions used in *sampling theory*
 
 - Sampling theory describes *summary statistics*, e.g., *averages* of actual data, or *averages* of squared deviations, such as 
   \begin{align*}
   \hat\mu&=\frac{1}{n}\sum_{i=1}^n X_i\quad\text{ or }\quad\hat\sigma^2=\frac{1}{n-1}\sum_{i=1}^n (X_i -\hat\mu)^2&
   \end{align*}
 
-- But we need to estimate the *density of the actual data* (i.e., $f(x)$), not the *density of some summary statistic* (i.e., $f(\hat\mu)$)
+- But our goal is to estimate the *density of actual data* (i.e., $f(x)$), not the *density of some summary statistic* (e.g., $f(\hat\mu)$)
 
 ## Parametric or Nonparametric?
 

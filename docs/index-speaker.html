@@ -590,7 +590,7 @@ Jeffrey S. Racine
 <section id="parametric-or-nonparametric" class="slide level2 smaller center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
-<li class="fragment"><p>Suppose we need to estimate the density <span class="math inline">\(f(x)\)</span> of some numeric random variable <span class="math inline">\(X\)</span>, and use the normal distribution as a model (in R we use the <code>dnorm(...,mean=...,sd=...)</code> function to represent the normal density)</p>
+<li class="fragment"><p>Suppose we need to estimate the density <span class="math inline">\(f(x)\)</span> of some numeric random variable <span class="math inline">\(X\)</span>, and use the normal distribution as a model (in R we use the <code>dnorm(...,mean=...,sd=...)</code> function to represent the normal density, see <code>?dnorm</code> for details)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="do">## Let's simulate a random numeric sample that, in fact, is drawn from the</span></span>
 <span id="cb2-2"><a href=""></a><span class="do">## standard normal distribution, i.e., N(0,1)</span></span>
@@ -715,11 +715,11 @@ Jeffrey S. Racine
 <section id="parametric-or-nonparametric-3" class="slide level2 center">
 <h2>Parametric or Nonparametric?</h2>
 <ul>
-<li class="fragment"><p>Actual data (denoted by <span class="math inline">\(X_i\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>) is rarely drawn from the simple parametric distributions used in <em>sampling theory</em></p></li>
+<li class="fragment"><p>Actual data will be denoted by <span class="math inline">\(X_i\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>, where <span class="math inline">\(n\)</span> is the sample size, is rarely drawn from the simple parametric distributions used in <em>sampling theory</em></p></li>
 <li class="fragment"><p>Sampling theory describes <em>summary statistics</em>, e.g., <em>averages</em> of actual data, or <em>averages</em> of squared deviations, such as <span class="math display">\[\begin{align*}
 \hat\mu&amp;=\frac{1}{n}\sum_{i=1}^n X_i\quad\text{ or }\quad\hat\sigma^2=\frac{1}{n-1}\sum_{i=1}^n (X_i -\hat\mu)^2&amp;
 \end{align*}\]</span></p></li>
-<li class="fragment"><p>But we need to estimate the <em>density of the actual data</em> (i.e., <span class="math inline">\(f(x)\)</span>), not the <em>density of some summary statistic</em> (i.e., <span class="math inline">\(f(\hat\mu)\)</span>)</p></li>
+<li class="fragment"><p>But our goal is to estimate the <em>density of actual data</em> (i.e., <span class="math inline">\(f(x)\)</span>), not the <em>density of some summary statistic</em> (e.g., <span class="math inline">\(f(\hat\mu)\)</span>)</p></li>
 </ul>
 </section>
 <section id="parametric-or-nonparametric-4" class="slide level2 center">
