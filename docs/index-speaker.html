@@ -550,7 +550,7 @@ Jeffrey S. Racine
 <span id="cb1-9"><a href=""></a><span class="fu">class</span>(sex);<span class="fu">class</span>(income);<span class="fu">class</span>(height)</span>
 <span id="cb1-10"><a href=""></a><span class="do">## income is already numeric(), but sex and height are character()</span></span>
 <span id="cb1-11"><a href=""></a><span class="do">## sex is categorical and unordered, so cast as type factor()</span></span>
-<span id="cb1-12"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(sex)</span>
+<span id="cb1-12"><a href=""></a>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(sex);sex</span>
 <span id="cb1-13"><a href=""></a><span class="do">## income is categorical and ordered, but we need to ensure intended order (it</span></span>
 <span id="cb1-14"><a href=""></a><span class="do">## will assume alphabetical ordering otherwise). Suppose you ignore it - let's</span></span>
 <span id="cb1-15"><a href=""></a><span class="do">## see what happens when we just cast as type ordered() using defaults</span></span>

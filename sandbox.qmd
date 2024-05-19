@@ -39,4 +39,4 @@ You can do inline math, i.e., $\hat\beta=(X'X)^{-1}X'Y$, or display math, i.e., 
  
 (display math appears on a separate line from the narrative.)
 
-And you can do inline R computation, e.g., the mean of eruptions is `r pander::pander(mean(faithful$eruptions))` minutes (this valuei was not pre-computed but is extracted from the data used in the above figure as this file is rendered).
+And you can do inline R computation, e.g., the mean of eruptions is `r pander::pander(mean(faithful$eruptions))` minutes (this value was not pre-computed but is extracted from the data used in the above figure as this file is rendered).

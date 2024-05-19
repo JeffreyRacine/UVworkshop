@@ -17,7 +17,7 @@ library(np)
 ## class(sex);class(income);class(height)
 ## ## income is already numeric(), but sex and height are character()
 ## ## sex is categorical and unordered, so cast as type factor()
-## sex <- factor(sex)
+## sex <- factor(sex);sex
 ## ## income is categorical and ordered, but we need to ensure intended order (it
 ## ## will assume alphabetical ordering otherwise). Suppose you ignore it - let's
 ## ## see what happens when we just cast as type ordered() using defaults
