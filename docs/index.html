@@ -1263,23 +1263,42 @@ y=\hat g(x)+\hat\epsilon
 </section>
 <section id="simulated-data-illustration" class="slide level2 center">
 <h2>Simulated Data Illustration</h2>
+<ul>
+<li class="fragment"><p>Let’s illustrate the nonparametric regression estimator using simulated data, and compare it to the OLS estimator for a linear model (i.e., <span class="math inline">\(g(x)=\beta_0+\beta_1x\)</span>)</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">library</span>(np)</span>
-<span id="cb12-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb12-3"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb12-4"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">runif</span>(n))</span>
-<span id="cb12-5"><a href=""></a>dgp <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x)</span>
-<span id="cb12-6"><a href=""></a>y <span class="ot">&lt;-</span> dgp <span class="sc">+</span> <span class="fu">rnorm</span>(n,<span class="at">sd=</span><span class="fl">0.25</span><span class="sc">*</span><span class="fu">sd</span>(dgp))</span>
-<span id="cb12-7"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(y<span class="sc">~</span>x)</span>
-<span id="cb12-8"><a href=""></a><span class="fu">plot</span>(x,y,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">col=</span><span class="st">"grey"</span>,<span class="at">xlab=</span><span class="st">"X"</span>,<span class="at">ylab=</span><span class="st">"Y"</span>)</span>
-<span id="cb12-9"><a href=""></a><span class="fu">lines</span>(x,dgp)</span>
-<span id="cb12-10"><a href=""></a><span class="fu">lines</span>(x,<span class="fu">fitted</span>(ghat),<span class="at">col=</span><span class="dv">2</span>)</span>
-<span id="cb12-11"><a href=""></a><span class="fu">abline</span>(ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x),<span class="at">col=</span><span class="dv">3</span>)</span>
-<span id="cb12-12"><a href=""></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="fu">c</span>(<span class="st">"DGP"</span>,<span class="st">"Kernel"</span>,<span class="st">"OLS"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+<span id="cb12-2"><a href=""></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb12-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb12-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb12-5"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">runif</span>(n))</span>
+<span id="cb12-6"><a href=""></a>dgp <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x)</span>
+<span id="cb12-7"><a href=""></a>y <span class="ot">&lt;-</span> dgp <span class="sc">+</span> <span class="fu">rnorm</span>(n,<span class="at">sd=</span><span class="fl">0.25</span><span class="sc">*</span><span class="fu">sd</span>(dgp))</span>
+<span id="cb12-8"><a href=""></a>ghat.ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x)</span>
+<span id="cb12-9"><a href=""></a><span class="fu">resettest</span>(ghat.ols)</span>
+<span id="cb12-10"><a href=""></a><span class="do">## </span></span>
+<span id="cb12-11"><a href=""></a><span class="do">##  RESET test</span></span>
+<span id="cb12-12"><a href=""></a><span class="do">## </span></span>
+<span id="cb12-13"><a href=""></a><span class="do">## data:  ghat.ols</span></span>
+<span id="cb12-14"><a href=""></a><span class="do">## RESET = 3536.9, df1 = 2, df2 = 996, p-value &lt; 2.2e-16</span></span>
+<span id="cb12-15"><a href=""></a>ghat <span class="ot">&lt;-</span> <span class="fu">npreg</span>(y<span class="sc">~</span>x)</span>
+<span id="cb12-16"><a href=""></a><span class="fu">plot</span>(x,y,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">col=</span><span class="st">"grey"</span>,<span class="at">xlab=</span><span class="st">"X"</span>,<span class="at">ylab=</span><span class="st">"Y"</span>)</span>
+<span id="cb12-17"><a href=""></a><span class="fu">lines</span>(x,dgp)</span>
+<span id="cb12-18"><a href=""></a><span class="fu">lines</span>(x,<span class="fu">fitted</span>(ghat),<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb12-19"><a href=""></a><span class="fu">abline</span>(ghat.ols,<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb12-20"><a href=""></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="fu">c</span>(<span class="st">"DGP"</span>,<span class="st">"Kernel"</span>,<span class="st">"OLS"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">bty=</span><span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<img data-src="index_files/figure-revealjs/npregcos-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="simulated-data-illustration-ols" class="slide level2 smaller center">
+</li>
+</ul>
+</section>
+<section id="simulated-data-illustration-output" class="slide level2 output-location-slide center"><h2>Simulated Data Illustration</h2><div class="cell output-location-slide" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/npregcos-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="simulated-data-illustration-ols" class="slide level2 smaller center">
 <h2>Simulated Data Illustration: OLS</h2>
 <p>How does the simple parametric linear model <code>ghat.ols</code> do for this simulated data?</p>
 <div class="cell" data-layout-align="center">

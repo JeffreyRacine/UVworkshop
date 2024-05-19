@@ -218,17 +218,21 @@ scatter3D(as.numeric(wage1.eval[,1])-1,wage1.eval[,2],fhat,
 
 ## ----npregcos-----------------------------------------------------------------
 #| echo: true
+#| output-location: slide
 library(np)
+library(lmtest)
 set.seed(42)
 n <- 1000
 x <- sort(runif(n))
 dgp <- cos(2*pi*x)
 y <- dgp + rnorm(n,sd=0.25*sd(dgp))
+ghat.ols <- lm(y~x)
+resettest(ghat.ols)
 ghat <- npreg(y~x)
 plot(x,y,cex=0.5,col="grey",xlab="X",ylab="Y")
 lines(x,dgp)
 lines(x,fitted(ghat),col=2)
-abline(ghat.ols <- lm(y~x),col=3)
+abline(ghat.ols,col=3)
 legend("top",c("DGP","Kernel","OLS"),col=1:3,lty=1,bty="n")
 
 

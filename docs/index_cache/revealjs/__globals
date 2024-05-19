@@ -13,7 +13,7 @@ npudensordered	~	c	npudens	ordered	plot	sample	set.seed
 tbl-wage1mixedtable	::	as.numeric	data	data.frame	library	numdep	sort	t	table	unique	wage1	with
 wage1mixeddensitycode	~	as.numeric	data	expand.grid	fitted	library	lwage	max	min	npudens	npudensbw	numdep	ordered	scatter3D	seq	sort	unique	wage1	with
 fig-wage1mixeddensity	~	as.numeric	data	expand.grid	fitted	lwage	max	min	npudens	npudensbw	numdep	ordered	scatter3D	seq	sort	unique	wage1	with
-npregcos	~	abline	c	cos	fitted	legend	library	lines	lm	npreg	pi	plot	rnorm	runif	sd	set.seed	sort
+npregcos	~	abline	c	cos	fitted	legend	library	lines	lm	npreg	pi	plot	resettest	rnorm	runif	sd	set.seed	sort
 cosolssummary	::	ghat.ols	summary
 cosgradient	abline	c	coef	ghat	ghat.ols	legend	lines	pi	plot	sin	x
 wage1summary	~	data	library	npreg	summary	wage1
