@@ -735,7 +735,7 @@ we replace $K(\cdot)$ with $K_\gamma(X_i,x)$
   
 ## Simulated Data Illustration
 
--   Let's illustrate the nonparametric regression estimator using simulated data, and compare it to the OLS estimator for a linear model (i.e., $g(x)=\beta_0+\beta_1x$)
+-   Let's illustrate the nonparametric method and compare it to a linear OLS model (i.e., $g(x)=\beta_0+\beta_1x$)
 
     ```{r npregcos}
     #| echo: true
