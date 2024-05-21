@@ -102,7 +102,7 @@ Encourage participants to print/save a PDF copy of the slides as there is no gua
 
 - The website with install info for R, RStudio, and $\rm\TeX$ is
 
-  <https://jeffreyracine.github.io/UVworkshop>
+  <https://jeffreyracine.github.io/UVwebsite>
 
 - The GitHub repository with example code is
 
